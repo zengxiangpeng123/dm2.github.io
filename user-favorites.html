@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="万汇网 - 我的收藏">
+    <title>我的收藏 | 万汇网</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .favorites-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .favorites-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            justify-content: space-between;
+        }
+        
+        .favorites-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .favorites-title p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .favorite-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            background-color: #fff;
+        }
+        
+        .favorite-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .favorite-icon {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .favorite-icon img {
+            max-height: 32px;
+            max-width: 32px;
+        }
+        
+        .favorite-info {
+            padding: 15px;
+        }
+        
+        .favorite-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: #333;
+        }
+        
+        .favorite-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            max-height: 63px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        
+        .favorite-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-top: 1px solid #eee;
+            background-color: #f8f9fa;
+        }
+        
+        .visit-btn {
+            padding: 6px 12px;
+            background-color: #6366F1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .visit-btn i {
+            margin-right: 5px;
+        }
+        
+        .remove-btn {
+            padding: 6px 12px;
+            background-color: #f8f9fa;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .remove-btn:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .empty-favorites {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+        
+        .empty-favorites i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .empty-favorites h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .empty-favorites a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #6366F1;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #6366F1;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .search-filter {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .search-filter input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            font-size: 16px;
+        }
+        
+        .search-filter input:focus {
+            outline: none;
+            border-color: #6366F1;
+        }
+        
+        .search-filter button {
+            padding: 0 20px;
+            background-color: #6366F1;
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+        }
+        
+        /* 添加用户下拉菜单样式 */
+        .user-dropdown {
+            position: relative;
+        }
+        
+        .user-btn {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .user-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+            object-fit: cover;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            display: none;
+            z-index: 100;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .dropdown-menu a.active {
+            background-color: #f0f0ff;
+            color: #6366F1;
+        }
+        
+        .dropdown-menu i {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>万汇网</h1>
+                <p>多领域资源聚合平台</p>
+            </div>
+            
+            <div class="header-actions">
+                <button class="language-toggle" id="languageToggle">
+                    <i class="bi bi-globe"></i>
+                    <span id="currentLang">中文</span>
+                </button>
+                <div id="user-actions">
+                    <div class="user-dropdown">
+                        <button class="user-btn">
+                            <img id="headerAvatarImg" src="./image/image--01.png" alt="用户头像" class="user-avatar-small">
+                            <span id="headerUsername">用户名</span>
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="user-profile.html">
+                                <i class="bi bi-person"></i>个人中心
+                            </a>
+                            <a href="user-mysites.html">
+                                <i class="bi bi-globe"></i>我的网站
+                            </a>
+                            <a href="user-favorites.html" class="active">
+                                <i class="bi bi-star"></i>我的收藏
+                            </a>
+                            <a href="user-forum-favorites.html">
+                                <i class="bi bi-bookmark"></i>帖子收藏
+                            </a>
+                            <a href="user-settings.html">
+                                <i class="bi bi-gear"></i>账号设置
+                            </a>
+                            <a href="#" id="logoutBtn">
+                                <i class="bi bi-box-arrow-right"></i>退出登录
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主体内容 -->
+    <main>
+        <div class="container">
+            <a href="index.html" class="back-link">
+                <i class="bi bi-arrow-left"></i> 返回首页
+            </a>
+            
+            <div class="favorites-container">
+                <div class="favorites-header">
+                    <div class="favorites-title">
+                        <h1>我的收藏</h1>
+                        <p>管理您收藏的所有网站资源</p>
+                    </div>
+                    <div class="favorites-count">
+                        <span id="totalCount">0</span> 个收藏
+                    </div>
+                </div>
+                
+                <div class="search-filter">
+                    <input type="text" id="searchFavorites" placeholder="搜索我的收藏...">
+                    <button type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                
+                <div id="favoritesGrid" class="favorites-grid">
+                    <!-- 收藏内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>关于我们</h3>
+                    <p>万汇网是一个汇集学术、设计、AI和影视资源的专业导航平台，致力于为用户提供高质量的资源聚合服务。</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="index.html#academic">学术资源</a></li>
+                        <li><a href="index.html#design">设计资源</a></li>
+                        <li><a href="index.html#ai">AI网站</a></li>
+                        <li><a href="index.html#media">影视资源</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h3>关注我们</h3>
+                    <div class="social-icons">
+                        <a href="#" target="_blank">
+                            <i class="bi bi-wechat"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi-tencent-qq"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi-chat-dots"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi-person-circle"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-feedback">
+                    <h3>意见反馈</h3>
+                    <form class="feedback-form">
+                        <input type="email" placeholder="您的邮箱" required>
+                        <textarea placeholder="您的意见或建议" required></textarea>
+                        <button type="submit">发送反馈</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 万汇网. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 微信二维码模态框 -->
+    <div class="qr-modal" id="wechatQrModal" style="display: none;">
+        <div class="qr-container">
+            <button class="qr-close" id="closeWechatQr"><i class="bi bi-x-lg"></i></button>
+            <div class="qr-header">
+                <div class="qr-title">扫码关注我们的微信公众号</div>
+                <div class="qr-subtitle">获取最新资源与活动信息</div>
+            </div>
+            <div class="qr-code">
+                <img src="./image/icons/微信公众号.jpg" alt="微信公众号二维码">
+            </div>
+            <div class="qr-tip">使用微信扫一扫，获取更多精彩内容</div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取用户信息
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const username = localStorage.getItem('username') || '游客';
+            const userAvatar = localStorage.getItem('userAvatar') || './image/image--01.png';
+            
+            // 更新用户信息显示
+            document.getElementById('headerUsername').textContent = username;
+            document.getElementById('headerAvatarImg').src = userAvatar;
+            
+            // 添加用户下拉菜单功能
+            const userBtn = document.querySelector('.user-btn');
+            if (userBtn) {
+                userBtn.addEventListener('click', function(e) {
+                    document.querySelector('.dropdown-menu').classList.toggle('show');
+                });
+                
+                // 点击外部关闭下拉菜单
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.user-dropdown')) {
+                        const dropdownMenu = document.querySelector('.dropdown-menu');
+                        if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+                            dropdownMenu.classList.remove('show');
+                        }
+                    }
+                });
+            }
+            
+            // 添加退出登录功能
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 清除登录信息
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                
+                // 提示用户已退出登录
+                alert('您已成功退出登录');
+                
+                // 重定向到首页
+                window.location.href = 'index.html';
+            });
+            
+            // 如果用户未登录，显示登录提示而不是强制跳转
+            if (isLoggedIn !== 'true') {
+                // 显示一个游客浏览提示，而不是强制跳转
+                const favoritesContainer = document.querySelector('.favorites-container');
+                if (favoritesContainer) {
+                    favoritesContainer.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px;" class="empty-favorites">
+                            <i class="bi bi-lock"></i>
+                            <h3>请先登录</h3>
+                            <p>您需要登录才能查看您的收藏内容</p>
+                            <div>
+                                <a href="login.html" class="visit-btn">登录</a>
+                                <a href="register.html" style="display: inline-block; background-color: #f5f5f5; color: #333; padding: 8px 16px; border-radius: 4px; text-decoration: none; margin-left: 10px;">注册</a>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 修改用户头像区域为游客状态
+                document.getElementById('headerUsername').textContent = '游客';
+                document.getElementById('user-actions').innerHTML = `
+                    <a href="login.html" class="login-btn" style="margin-right: 10px; padding: 8px 16px; background-color: #6366F1; color: white; border-radius: 4px; text-decoration: none;">登录</a>
+                    <a href="register.html" class="register-btn" style="padding: 8px 16px; background-color: white; color: #333; border: 1px solid #ddd; border-radius: 4px; text-decoration: none;">注册</a>
+                `;
+                
+                return;
+            }
+            
+            // 加载用户收藏数据
+            loadFavorites();
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchFavorites');
+            searchInput.addEventListener('input', function() {
+                filterFavorites(this.value.trim().toLowerCase());
+            });
+            
+            // 搜索按钮点击事件
+            const searchButton = document.querySelector('.search-filter button');
+            searchButton.addEventListener('click', function() {
+                const searchText = searchInput.value.trim();
+                if (!searchText) {
+                    // 如果搜索框为空，跳转到首页
+                    window.location.href = 'index.html';
+                } else {
+                    // 否则执行搜索
+                    filterFavorites(searchText.toLowerCase());
+                }
+            });
+        });
+        
+        // 加载收藏数据
+        function loadFavorites() {
+            // 从localStorage获取收藏数据
+            const favorites = JSON.parse(localStorage.getItem('userFavorites')) || [];
+            const favoritesGrid = document.getElementById('favoritesGrid');
+            const totalCount = document.getElementById('totalCount');
+            
+            // 更新收藏计数
+            totalCount.textContent = favorites.length;
+            
+            // 如果没有收藏，显示空状态
+            if (favorites.length === 0) {
+                favoritesGrid.innerHTML = `
+                    <div class="empty-favorites" style="grid-column: 1 / -1;">
+                        <i class="bi bi-star"></i>
+                        <h3>暂无收藏</h3>
+                        <p>您还没有收藏任何网站，浏览资源并点击爱心图标添加收藏</p>
+                        <a href="index.html">浏览资源</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 渲染收藏列表
+            favoritesGrid.innerHTML = '';
+            favorites.forEach(favorite => {
+                const card = document.createElement('div');
+                card.className = 'favorite-card';
+                card.innerHTML = `
+                    <div class="favorite-icon">
+                        <img src="${favorite.icon || 'https://www.google.com/s2/favicons?domain=' + new URL(favorite.url).hostname}" alt="${favorite.name}">
+                    </div>
+                    <div class="favorite-info">
+                        <h3>${favorite.name}</h3>
+                        <p>${favorite.description || '暂无描述'}</p>
+                    </div>
+                    <div class="favorite-actions">
+                        <a href="${favorite.url}" class="visit-btn" target="_blank">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            访问网站
+                        </a>
+                        <button class="remove-btn" data-url="${favorite.url}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+                favoritesGrid.appendChild(card);
+                
+                // 添加移除收藏事件
+                const removeBtn = card.querySelector('.remove-btn');
+                removeBtn.addEventListener('click', function() {
+                    removeFavorite(this.getAttribute('data-url'));
+                });
+            });
+        }
+        
+        // 过滤收藏列表
+        function filterFavorites(searchText) {
+            const favorites = JSON.parse(localStorage.getItem('userFavorites')) || [];
+            const filteredFavorites = favorites.filter(favorite => 
+                favorite.name.toLowerCase().includes(searchText) || 
+                (favorite.description && favorite.description.toLowerCase().includes(searchText))
+            );
+            
+            const favoritesGrid = document.getElementById('favoritesGrid');
+            const totalCount = document.getElementById('totalCount');
+            
+            // 更新过滤后的计数
+            totalCount.textContent = filteredFavorites.length;
+            
+            // 如果过滤后没有收藏，显示空状态
+            if (filteredFavorites.length === 0) {
+                favoritesGrid.innerHTML = `
+                    <div class="empty-favorites" style="grid-column: 1 / -1;">
+                        <i class="bi bi-search"></i>
+                        <h3>未找到匹配结果</h3>
+                        <p>没有找到与"${searchText}"相关的收藏内容</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 渲染过滤后的收藏列表
+            favoritesGrid.innerHTML = '';
+            filteredFavorites.forEach(favorite => {
+                const card = document.createElement('div');
+                card.className = 'favorite-card';
+                card.innerHTML = `
+                    <div class="favorite-icon">
+                        <img src="${favorite.icon || 'https://www.google.com/s2/favicons?domain=' + new URL(favorite.url).hostname}" alt="${favorite.name}">
+                    </div>
+                    <div class="favorite-info">
+                        <h3>${favorite.name}</h3>
+                        <p>${favorite.description || '暂无描述'}</p>
+                    </div>
+                    <div class="favorite-actions">
+                        <a href="${favorite.url}" class="visit-btn" target="_blank">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            访问网站
+                        </a>
+                        <button class="remove-btn" data-url="${favorite.url}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+                favoritesGrid.appendChild(card);
+                
+                // 添加移除收藏事件
+                const removeBtn = card.querySelector('.remove-btn');
+                removeBtn.addEventListener('click', function() {
+                    removeFavorite(this.getAttribute('data-url'));
+                });
+            });
+        }
+        
+        // 移除收藏
+        function removeFavorite(url) {
+            // 获取当前收藏
+            let favorites = JSON.parse(localStorage.getItem('userFavorites')) || [];
+            
+            // 移除匹配URL的收藏
+            favorites = favorites.filter(favorite => favorite.url !== url);
+            
+            // 保存更新后的收藏
+            localStorage.setItem('userFavorites', JSON.stringify(favorites));
+            
+            // 重新加载收藏列表
+            loadFavorites();
+            
+            // 可选：如果有搜索文本，重新应用过滤
+            const searchInput = document.getElementById('searchFavorites');
+            if (searchInput.value.trim()) {
+                filterFavorites(searchInput.value.trim().toLowerCase());
+            }
+            
+            // 显示轻量级提示
+            showToast('收藏已移除');
+        }
+        
+        // 显示轻量级提示信息
+        function showToast(message) {
+            // 创建或获取toast元素
+            let toast = document.getElementById('toast-message');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast-message';
+                document.body.appendChild(toast);
+                
+                // 添加样式
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                toast.style.color = 'white';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = '4px';
+                toast.style.zIndex = '9999';
+                toast.style.fontSize = '14px';
+                toast.style.transition = 'opacity 0.3s';
+            }
+            
+            // 设置消息内容
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            
+            // 2秒后隐藏提示
+            clearTimeout(toast.timer);
+            toast.timer = setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+        // 微信二维码展示功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const wechatIcon = document.querySelector('.social-icons a:first-child');
+            const wechatQrModal = document.getElementById('wechatQrModal');
+            const closeWechatQr = document.getElementById('closeWechatQr');
+            
+            if (wechatIcon && wechatQrModal && closeWechatQr) {
+                // 点击微信图标显示二维码
+                wechatIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    wechatQrModal.style.display = 'flex';
+                });
+                
+                // 点击关闭按钮隐藏二维码
+                closeWechatQr.addEventListener('click', function() {
+                    wechatQrModal.style.display = 'none';
+                });
+                
+                // 点击模态框背景区域隐藏二维码
+                wechatQrModal.addEventListener('click', function(e) {
+                    if (e.target === wechatQrModal) {
+                        wechatQrModal.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

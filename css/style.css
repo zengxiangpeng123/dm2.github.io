@@ -1,0 +1,527 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #4285f4;
+}
+
+ul {
+    list-style: none;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-primary {
+    background-color: #4285f4;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #3367d6;
+    color: white;
+}
+
+/* 头部样式 */
+.header {
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4285f4;
+}
+
+.search-bar {
+    display: flex;
+    width: 300px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px 0 0 3px;
+    outline: none;
+}
+
+.search-bar button {
+    padding: 8px 15px;
+    border: none;
+    background-color: #4285f4;
+    color: white;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+}
+
+.main-nav ul {
+    display: flex;
+}
+
+.main-nav ul li {
+    margin-right: 20px;
+}
+
+.main-nav ul li a {
+    font-weight: bold;
+}
+
+.main-nav ul li a.active {
+    color: #4285f4;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.user-actions a {
+    margin-left: 10px;
+}
+
+/* 主要内容 */
+.content-wrapper {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.posts-list {
+    flex-grow: 1;
+    margin-right: 20px;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.category-nav {
+    border-bottom: 1px solid #eee;
+    padding: 10px 15px;
+}
+
+.category-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category-nav ul li {
+    margin-right: 15px;
+}
+
+.category-nav ul li a.active {
+    color: #4285f4;
+    font-weight: bold;
+}
+
+.post-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s;
+}
+
+.post-item:hover {
+    background-color: #f9f9f9;
+}
+
+.post-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.post-title h2 {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.post-tag {
+    background-color: #ff9800;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.post-info {
+    color: #999;
+    font-size: 12px;
+}
+
+.post-info > * {
+    margin-right: 10px;
+}
+
+.author {
+    color: #4285f4;
+}
+
+.post-preview {
+    margin-top: 10px;
+}
+
+.preview-images {
+    display: flex;
+}
+
+.preview-images img {
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.pagination a.active {
+    background-color: #4285f4;
+    color: white;
+    border-color: #4285f4;
+}
+
+.pagination a.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 侧边栏 */
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.sidebar-block {
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.sidebar-block h3 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.sidebar-block ul li {
+    margin-bottom: 8px;
+}
+
+.not-logged {
+    text-align: center;
+}
+
+.sidebar-actions {
+    margin-top: 10px;
+}
+
+.sidebar-actions .btn {
+    margin: 0 5px;
+}
+
+/* 页脚 */
+.footer {
+    background-color: #333;
+    color: white;
+    padding: 30px 0;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.footer-links a {
+    color: white;
+    margin: 0 15px;
+}
+
+.footer-links a:hover {
+    color: #4285f4;
+}
+
+.copyright {
+    text-align: center;
+    color: #aaa;
+    font-size: 12px;
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+    
+    .posts-list {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .sidebar {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .logo, .search-bar, .main-nav, .user-actions {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.post-item, .sidebar-block {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 登录/注册表单样式 */
+.login-container,
+.register-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+/* 消息样式 */
+.login-message,
+.register-message {
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.warning-message {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.info-message {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* 登录错误提示 */
+.login-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px 15px;
+    margin: 15px 0;
+    border-radius: 4px;
+    border: 1px solid #f5c6cb;
+}
+
+/* 用户头像和信息样式 */
+.user-link {
+    display: flex;
+    align-items: center;
+    color: #333;
+    text-decoration: none;
+    padding: 0 10px;
+}
+
+.user-link:hover {
+    color: #4285f4;
+}
+
+.user-avatar-small {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.messages {
+    color: #333;
+    text-decoration: none;
+    padding: 0 10px;
+    position: relative;
+}
+
+.messages:hover {
+    color: #4285f4;
+}
+
+.messages .badge {
+    position: absolute;
+    top: -5px;
+    right: 0;
+    background-color: #f44336;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 登录表单选项样式 */
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.forgot-password {
+    color: #4285f4;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* 社交登录样式 */
+.social-login {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.social-login p {
+    margin-bottom: 15px;
+    color: #666;
+    position: relative;
+}
+
+.social-login p:before,
+.social-login p:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.social-login p:before {
+    left: 0;
+}
+
+.social-login p:after {
+    right: 0;
+}
+
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 15px;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    flex: 1;
+    max-width: 120px;
+}
+
+.social-button.wechat {
+    background-color: #07c160;
+}
+
+.social-button.qq {
+    background-color: #12b7f5;
+}
+
+.social-button.weibo {
+    background-color: #e6162d;
+}
+
+.social-button:hover {
+    opacity: 0.9;
+} 

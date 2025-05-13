@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="万汇网 - 个人资料管理">
+    <title>个人资料 | 万汇网</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 30px;
+            border: 3px solid #6366F1;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-avatar .change-avatar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding: 5px 0;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .profile-avatar:hover .change-avatar {
+            opacity: 1;
+        }
+        
+        .profile-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .profile-title p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .profile-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #6366F1;
+            outline: none;
+        }
+        
+        .form-group-full {
+            grid-column: span 2;
+        }
+        
+        .profile-actions {
+            text-align: right;
+            margin-top: 20px;
+            grid-column: span 2;
+        }
+        
+        .profile-actions button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .save-btn {
+            background-color: #6366F1;
+            color: white;
+            margin-left: 10px;
+        }
+        
+        .cancel-btn {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .save-btn:hover {
+            background-color: #4F46E5;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #e5e5e5;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group-full {
+                grid-column: span 1;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .profile-actions {
+                grid-column: span 1;
+            }
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #6366F1;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* 添加用户下拉菜单样式 */
+        .user-dropdown {
+            position: relative;
+        }
+        
+        .user-btn {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .user-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+            object-fit: cover;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            display: none;
+            z-index: 100;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .dropdown-menu a.active {
+            background-color: #f0f0ff;
+            color: #6366F1;
+        }
+        
+        .dropdown-menu i {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        /* 添加通知条样式 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #34D399;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .notification.show {
+            opacity: 1;
+        }
+        
+        .notification i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .notification-text {
+            font-weight: 500;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>万汇网</h1>
+                <p>多领域资源聚合平台</p>
+            </div>
+            
+            <div class="header-actions">
+                <button class="language-toggle" id="languageToggle">
+                    <i class="bi bi-globe"></i>
+                    <span id="currentLang">中文</span>
+                </button>
+                <div id="user-actions">
+                    <div class="user-dropdown">
+                        <button class="user-btn">
+                            <img id="headerAvatarImg" src="./image/image--01.png" alt="用户头像" class="user-avatar-small">
+                            <span id="headerUsername">用户名</span>
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="user-profile.html" class="active">
+                                <i class="bi bi-person"></i>个人中心
+                            </a>
+                            <a href="user-mysites.html">
+                                <i class="bi bi-globe"></i>我的网站
+                            </a>
+                            <a href="user-favorites.html">
+                                <i class="bi bi-star"></i>我的收藏
+                            </a>
+                            <a href="user-forum-favorites.html">
+                                <i class="bi bi-bookmark"></i>帖子收藏
+                            </a>
+                            <a href="user-settings.html">
+                                <i class="bi bi-gear"></i>账号设置
+                            </a>
+                            <a href="#" id="logoutBtn">
+                                <i class="bi bi-box-arrow-right"></i>退出登录
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 通知条 -->
+    <div class="notification" id="notification">
+        <i class="bi bi-check-circle"></i>
+        <span class="notification-text">已保存修改</span>
+    </div>
+    
+    <!-- 主体内容 -->
+    <main>
+        <div class="container">
+            <a href="index.html" class="back-link">
+                <i class="bi bi-arrow-left"></i> 返回首页
+            </a>
+            
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar">
+                        <img src="./image/image--01.png" alt="用户头像" id="profileAvatarImg">
+                        <div class="change-avatar">更换头像</div>
+                    </div>
+                    <div class="profile-title">
+                        <h1>个人资料</h1>
+                        <p>管理您的个人信息和偏好设置</p>
+                    </div>
+                </div>
+                
+                <form class="profile-form" id="profileForm">
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" name="username" placeholder="输入您的用户名" style="background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; width: 100%; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">电子邮箱</label>
+                        <input type="email" id="email" name="email" placeholder="输入您的电子邮箱" style="background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; width: 100%; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">手机号码</label>
+                        <input type="tel" id="phone" name="phone" placeholder="输入您的手机号码" style="background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; width: 100%; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">性别</label>
+                        <select id="gender" name="gender" style="background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; width: 100%; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+                            <option value="">请选择</option>
+                            <option value="male">男</option>
+                            <option value="female">女</option>
+                            <option value="other">其他</option>
+                            <option value="private">不愿透露</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birth">出生日期</label>
+                        <input type="date" id="birth" name="birth" style="background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; width: 100%; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profession">职业</label>
+                        <input type="text" id="profession" name="profession" placeholder="输入您的职业" style="background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; width: 100%; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);">
+                    </div>
+                    
+                    <div class="form-group-full">
+                        <h3 style="margin-bottom: 5px; color: #333; font-size: 16px; font-weight: 500;">兴趣爱好</h3>
+                        <p style="margin-bottom: 10px; color: #666; font-size: 14px;">请输入您的兴趣爱好，多个爱好用逗号分隔</p>
+                        <textarea id="interests" name="interests" rows="3" style="resize: none; overflow-y: auto; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; width: 100%; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);" maxlength="200" placeholder="在此输入您的兴趣爱好..."></textarea>
+                        <div class="text-count" id="interestsCount" style="text-align: right; color: #666; font-size: 12px;">0/200</div>
+                    </div>
+                    
+                    <div class="form-group-full">
+                        <h3 style="margin-bottom: 5px; color: #333; font-size: 16px; font-weight: 500;">个人简介</h3>
+                        <p style="margin-bottom: 10px; color: #666; font-size: 14px;">请简要介绍一下自己</p>
+                        <textarea id="bio" name="bio" rows="5" style="resize: none; overflow-y: auto; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 10px; width: 100%; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);" maxlength="500" placeholder="在此介绍一下自己..."></textarea>
+                        <div class="text-count" id="bioCount" style="text-align: right; color: #666; font-size: 12px;">0/500</div>
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button type="button" class="cancel-btn" id="cancelBtn">取消</button>
+                        <button type="submit" class="save-btn">保存修改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>关于我们</h3>
+                    <p>万汇网是一个汇集学术、设计、AI和影视资源的专业导航平台，致力于为用户提供高质量的资源聚合服务。</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="index.html#academic">学术资源</a></li>
+                        <li><a href="index.html#design">设计资源</a></li>
+                        <li><a href="index.html#ai">AI网站</a></li>
+                        <li><a href="index.html#media">影视资源</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h3>关注我们</h3>
+                    <div class="social-icons">
+                        <a href="#" target="_blank">
+                            <i class="bi bi-wechat"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi bi-tencent-qq"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi bi-chat-dots"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi bi-person-circle"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-feedback">
+                    <h3>意见反馈</h3>
+                    <form class="feedback-form">
+                        <input type="email" placeholder="您的邮箱" required>
+                        <textarea placeholder="您的意见或建议" required></textarea>
+                        <button type="submit">发送反馈</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 万汇网. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- 头像选择模态框 -->
+    <div class="avatar-modal" id="avatarModal">
+        <div class="avatar-container">
+            <div class="avatar-header">
+                <h3>选择头像</h3>
+                <span class="close-modal" id="closeAvatarModal">&times;</span>
+            </div>
+            <div class="avatar-tabs">
+                <div class="avatar-tab active" data-tab="preset">预设头像</div>
+                <div class="avatar-tab" data-tab="upload">上传头像</div>
+            </div>
+            <div class="avatar-content">
+                <div class="avatar-tab-panel active" id="preset-panel">
+                    <div class="avatar-options">
+                        <div class="avatar-option" data-avatar="./image/image--01.png">
+                            <img src="./image/image--01.png" alt="头像选项1">
+                        </div>
+                        <div class="avatar-option" data-avatar="./image/image--02.png">
+                            <img src="./image/image--02.png" alt="头像选项2">
+                        </div>
+                        <div class="avatar-option" data-avatar="./image/image--03.png">
+                            <img src="./image/image--03.png" alt="头像选项3">
+                        </div>
+                        <div class="avatar-option" data-avatar="./image/image--04.png">
+                            <img src="./image/image--04.png" alt="头像选项4">
+                        </div>
+                        <div class="avatar-option" data-avatar="./image/image--05.png">
+                            <img src="./image/image--05.png" alt="头像选项5">
+                        </div>
+                        <div class="avatar-option" data-avatar="./image/image--06.png">
+                            <img src="./image/image--06.png" alt="头像选项6">
+                        </div>
+                        <div class="avatar-option" data-avatar="./image/image--07.png">
+                            <img src="./image/image--07.png" alt="头像选项7">
+                        </div>
+                        <div class="avatar-option" data-avatar="./image/image--08.png">
+                            <img src="./image/image--08.png" alt="头像选项8">
+                        </div>
+                        <div class="avatar-option" data-avatar="./image/image--09.png">
+                            <img src="./image/image--09.png" alt="头像选项9">
+                        </div>
+                    </div>
+                </div>
+                <div class="avatar-tab-panel" id="upload-panel">
+                    <div class="upload-avatar-container">
+                        <div class="upload-preview">
+                            <img id="uploadPreview" src="./image/image--01.png" alt="预览头像">
+                        </div>
+                        <div class="upload-controls">
+                            <label for="avatarUpload" class="upload-btn">选择图片</label>
+                            <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                            <p class="upload-tip">支持JPG、PNG格式，建议使用正方形图片</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="avatar-actions">
+                <button id="saveAvatar" class="save-avatar-btn">保存选择</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 微信二维码模态框 -->
+    <div class="qr-modal" id="wechatQrModal" style="display: none;">
+        <div class="qr-container">
+            <button class="qr-close" id="closeWechatQr"><i class="bi bi-x-lg"></i></button>
+            <div class="qr-header">
+                <div class="qr-title">扫码关注我们的微信公众号</div>
+                <div class="qr-subtitle">获取最新资源与活动信息</div>
+            </div>
+            <div class="qr-code">
+                <img src="./image/icons/微信公众号.jpg" alt="微信公众号二维码">
+            </div>
+            <div class="qr-tip">使用微信扫一扫，获取更多精彩内容</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取用户信息
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const username = localStorage.getItem('username') || '游客';
+            const userAvatar = localStorage.getItem('userAvatar') || './image/image--01.png';
+            const isUploadedAvatar = localStorage.getItem('isUploadedAvatar') === 'true';
+            
+            // 更新用户信息显示
+            document.getElementById('headerUsername').textContent = username;
+            document.getElementById('headerAvatarImg').src = userAvatar;
+            document.getElementById('profileAvatarImg').src = userAvatar;
+            
+            // 添加用户下拉菜单功能
+            const userBtn = document.querySelector('.user-btn');
+            if (userBtn) {
+                userBtn.addEventListener('click', function(e) {
+                    // 判断点击的是否为用户头像或用户名
+                    if (e.target === document.getElementById('headerAvatarImg') || e.target.id === 'headerUsername') {
+                        // 在个人资料页面不需要跳转，直接展开菜单
+                        document.querySelector('.dropdown-menu').classList.toggle('show');
+                        return;
+                    }
+                    
+                    // 如果是点击下拉图标或按钮背景，则展开下拉菜单
+                    document.querySelector('.dropdown-menu').classList.toggle('show');
+                });
+                
+                // 点击外部关闭下拉菜单
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.user-dropdown')) {
+                        const dropdownMenu = document.querySelector('.dropdown-menu');
+                        if (dropdownMenu && dropdownMenu.classList.contains('show')) {
+                            dropdownMenu.classList.remove('show');
+                        }
+                    }
+                });
+            }
+            
+            // 添加退出登录功能
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 清除登录信息
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                
+                // 提示用户已退出登录
+                alert('您已成功退出登录');
+                
+                // 重定向到首页
+                window.location.href = 'index.html';
+            });
+            
+            // 如果用户未登录，显示登录提示而不是强制跳转
+            if (isLoggedIn !== 'true') {
+                // 显示一个游客浏览提示，而不是强制跳转
+                const profileContainer = document.querySelector('.profile-container');
+                if (profileContainer) {
+                    profileContainer.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <i class="bi bi-lock" style="font-size: 48px; color: #6366F1; margin-bottom: 20px;"></i>
+                            <h2 style="margin-bottom: 15px; color: #333;">请先登录</h2>
+                            <p style="margin-bottom: 25px; color: #666;">您需要登录才能查看或编辑个人资料</p>
+                            <div>
+                                <a href="login.html" style="display: inline-block; background-color: #6366F1; color: white; padding: 10px 20px; margin-right: 10px; border-radius: 4px; text-decoration: none;">登录</a>
+                                <a href="register.html" style="display: inline-block; background-color: #f5f5f5; color: #333; padding: 10px 20px; border-radius: 4px; text-decoration: none;">注册</a>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 修改用户头像区域为游客状态
+                document.getElementById('headerUsername').textContent = '游客';
+                document.getElementById('user-actions').innerHTML = `
+                    <a href="login.html" class="login-btn" style="margin-right: 10px; padding: 8px 16px; background-color: #6366F1; color: white; border-radius: 4px; text-decoration: none;">登录</a>
+                    <a href="register.html" class="register-btn" style="padding: 8px 16px; background-color: white; color: #333; border: 1px solid #ddd; border-radius: 4px; text-decoration: none;">注册</a>
+                `;
+                
+                return;
+            }
+            
+            // 加载个人信息（从本地存储或模拟数据）
+            loadUserProfile();
+            
+            // 表单提交事件
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveUserProfile();
+            });
+            
+            // 取消按钮点击事件
+            document.getElementById('cancelBtn').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            // 头像点击事件
+            document.getElementById('profileAvatar').addEventListener('click', function() {
+                document.getElementById('avatarModal').style.display = 'flex';
+                
+                // 如果是上传的头像，切换到上传选项卡
+                if (isUploadedAvatar) {
+                    const uploadTab = document.querySelector('.avatar-tab[data-tab="upload"]');
+                    if (uploadTab) {
+                        // 激活上传选项卡
+                        document.querySelectorAll('.avatar-tab').forEach(tab => {
+                            tab.classList.remove('active');
+                        });
+                        uploadTab.classList.add('active');
+                        
+                        // 显示上传面板
+                        document.querySelectorAll('.avatar-tab-panel').forEach(panel => {
+                            panel.classList.remove('active');
+                        });
+                        document.getElementById('upload-panel').classList.add('active');
+                    }
+                } else {
+                    // 如果是预设头像，找到并选中当前头像
+                    const currentAvatarSrc = localStorage.getItem('userAvatar');
+                    if (currentAvatarSrc) {
+                        const avatarOptions = document.querySelectorAll('.avatar-option');
+                        avatarOptions.forEach(option => {
+                            const optionSrc = option.getAttribute('data-avatar');
+                            if (optionSrc === currentAvatarSrc) {
+                                option.classList.add('selected');
+                            } else {
+                                option.classList.remove('selected');
+                            }
+                        });
+                    }
+                }
+            });
+            
+            // 关闭头像模态框
+            document.getElementById('closeAvatarModal').addEventListener('click', function() {
+                document.getElementById('avatarModal').style.display = 'none';
+            });
+            
+            // 选择预设头像
+            let selectedAvatar = userAvatar;
+            let isUploadedAvatarChoice = isUploadedAvatar;
+            
+            document.querySelectorAll('.avatar-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 移除之前的选择
+                    document.querySelectorAll('.avatar-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    // 添加新的选择
+                    this.classList.add('selected');
+                    // 保存选中的头像URL
+                    selectedAvatar = this.getAttribute('data-avatar');
+                    isUploadedAvatarChoice = false;
+                });
+            });
+            
+            // 选项卡切换
+            document.querySelectorAll('.avatar-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // 切换选项卡样式
+                    document.querySelectorAll('.avatar-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // 切换面板显示
+                    document.querySelectorAll('.avatar-tab-panel').forEach(panel => {
+                        panel.classList.remove('active');
+                    });
+                    document.getElementById(`${tabId}-panel`).classList.add('active');
+                });
+            });
+            
+            // 处理头像上传
+            const avatarUpload = document.getElementById('avatarUpload');
+            const uploadPreview = document.getElementById('uploadPreview');
+            
+            // 如果用户之前上传了头像，恢复预览
+            if (isUploadedAvatar && userAvatar) {
+                uploadPreview.src = userAvatar;
+            }
+            
+            avatarUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                
+                if (file) {
+                    // 检查文件类型
+                    if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                        alert('请上传JPG或PNG格式的图片');
+                        return;
+                    }
+                    
+                    // 检查文件大小（最大5MB）
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('图片大小不能超过5MB');
+                        return;
+                    }
+                    
+                    // 读取文件并预览
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        // 压缩图片
+                        const img = new Image();
+                        img.onload = function() {
+                            // 创建画布进行压缩
+                            const canvas = document.createElement('canvas');
+                            // 限制尺寸为300x300像素，足够作为头像使用
+                            const maxSize = 300;
+                            let width = img.width;
+                            let height = img.height;
+                            
+                            // 缩放逻辑
+                            if (width > height) {
+                                if (width > maxSize) {
+                                    height *= maxSize / width;
+                                    width = maxSize;
+                                }
+                            } else {
+                                if (height > maxSize) {
+                                    width *= maxSize / height;
+                                    height = maxSize;
+                                }
+                            }
+                            
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            // 压缩为较低质量的JPEG
+                            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                            
+                            // 更新预览和选择
+                            uploadPreview.src = compressedDataUrl;
+                            selectedAvatar = compressedDataUrl;
+                            isUploadedAvatarChoice = true;
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 保存头像选择
+            document.getElementById('saveAvatar').addEventListener('click', function() {
+                if (selectedAvatar) {
+                    // 更新页面上的头像显示
+                    document.getElementById('profileAvatarImg').src = selectedAvatar;
+                    document.getElementById('headerAvatarImg').src = selectedAvatar;
+                    
+                    // 保存头像信息到本地存储
+                    localStorage.setItem('userAvatar', selectedAvatar);
+                    localStorage.setItem('isUploadedAvatar', isUploadedAvatarChoice ? 'true' : 'false');
+                    
+                    // 显示保存成功提示
+                    alert('头像已保存成功！');
+                    
+                    // 隐藏模态框
+                    document.getElementById('avatarModal').style.display = 'none';
+                }
+            });
+            
+            // 加载用户个人资料
+            function loadUserProfile() {
+                // 尝试从localStorage加载用户资料
+                const profileData = JSON.parse(localStorage.getItem('userProfileData')) || {};
+                
+                // 获取账号设置中的数据
+                const securitySettings = JSON.parse(localStorage.getItem('securitySettings')) || {};
+                
+                // 填充表单数据
+                document.getElementById('username').value = profileData.username || username;
+                
+                // 优先使用安全设置中的邮箱和手机号（如果有）
+                document.getElementById('email').value = securitySettings.email || profileData.email || '';
+                document.getElementById('phone').value = securitySettings.phone || profileData.phone || '';
+                
+                document.getElementById('gender').value = profileData.gender || '';
+                document.getElementById('birth').value = profileData.birth || '';
+                document.getElementById('profession').value = profileData.profession || '';
+                document.getElementById('interests').value = profileData.interests || '';
+                document.getElementById('bio').value = profileData.bio || '';
+                
+                // 更新字数统计
+                updateTextCount('interests', 200);
+                updateTextCount('bio', 500);
+            }
+            
+            // 字数统计功能
+            function updateTextCount(elementId, maxLength) {
+                const element = document.getElementById(elementId);
+                const countElement = document.getElementById(elementId + 'Count');
+                const currentLength = element.value.length;
+                countElement.textContent = currentLength + '/' + maxLength;
+                
+                // 当接近最大字数时改变颜色提醒用户
+                if (currentLength > maxLength * 0.8) {
+                    countElement.style.color = '#ff9800'; // 黄色警告
+                    if (currentLength > maxLength * 0.95) {
+                        countElement.style.color = '#f44336'; // 红色警告
+                    }
+                } else {
+                    countElement.style.color = '#666';
+                }
+            }
+            
+            // 添加输入事件监听器
+            document.getElementById('interests').addEventListener('input', function() {
+                updateTextCount('interests', 200);
+            });
+            
+            document.getElementById('bio').addEventListener('input', function() {
+                updateTextCount('bio', 500);
+            });
+            
+            // 保存用户个人资料
+            function saveUserProfile() {
+                // 收集表单数据
+                const profileData = {
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    gender: document.getElementById('gender').value,
+                    birth: document.getElementById('birth').value,
+                    profession: document.getElementById('profession').value,
+                    interests: document.getElementById('interests').value,
+                    bio: document.getElementById('bio').value
+                };
+                
+                // 保存到localStorage
+                localStorage.setItem('userProfileData', JSON.stringify(profileData));
+                
+                // 更新用户名
+                localStorage.setItem('username', profileData.username);
+                document.getElementById('headerUsername').textContent = profileData.username;
+                
+                // 同步保存邮箱和手机号到账号安全设置
+                // 先读取现有安全设置（如果有）
+                const securitySettings = JSON.parse(localStorage.getItem('securitySettings')) || {};
+                
+                // 更新邮箱和手机号
+                securitySettings.email = profileData.email;
+                securitySettings.phone = profileData.phone;
+                
+                // 保存回localStorage
+                localStorage.setItem('securitySettings', JSON.stringify(securitySettings));
+                
+                // 储存基本信息到单独的键中，以便其他页面直接访问
+                localStorage.setItem('userEmail', profileData.email);
+                localStorage.setItem('userPhone', profileData.phone);
+                
+                // 显示保存成功通知
+                showNotification();
+            }
+            
+            // 显示通知函数
+            function showNotification() {
+                const notification = document.getElementById('notification');
+                notification.classList.add('show');
+                
+                // 3秒后自动隐藏通知
+                setTimeout(function() {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        // 微信二维码展示功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const wechatIcon = document.querySelector('.social-icons a:first-child');
+            const wechatQrModal = document.getElementById('wechatQrModal');
+            const closeWechatQr = document.getElementById('closeWechatQr');
+            
+            if (wechatIcon && wechatQrModal && closeWechatQr) {
+                // 点击微信图标显示二维码
+                wechatIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    wechatQrModal.style.display = 'flex';
+                });
+                
+                // 点击关闭按钮隐藏二维码
+                closeWechatQr.addEventListener('click', function() {
+                    wechatQrModal.style.display = 'none';
+                });
+                
+                // 点击模态框背景区域隐藏二维码
+                wechatQrModal.addEventListener('click', function(e) {
+                    if (e.target === wechatQrModal) {
+                        wechatQrModal.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

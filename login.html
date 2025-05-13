@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录 - 万汇网</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --color-primary: #6a4df3;
+            --color-primary-dark: #5a3ecd;
+            --color-primary-light: #8e75f5;
+            --color-text: #2a2a3c;
+            --color-text-secondary: #6e6e80;
+            --color-background: #f8f9fc;
+            --color-bg-secondary: #ffffff;
+            --color-border: #e2e4ed;
+            --radius-md: 8px;
+            --transition-fast: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fc 0%, #e9ecf8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(106, 77, 243, 0.08);
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .login-header h1 {
+            color: var(--color-text);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .login-header p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+        
+        .login-title {
+            font-size: 24px;
+            color: var(--color-text);
+            margin-bottom: 10px;
+        }
+        
+        .login-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .form-group:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        
+        .form-group:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .form-group:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background-color: var(--color-bg-secondary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(106, 77, 243, 0.15);
+            outline: none;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+        
+        .form-input {
+            position: relative;
+        }
+        
+        .form-input input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            color: var(--color-text);
+            transition: border-color var(--transition-fast);
+        }
+        
+        .form-input input:focus {
+            border-color: var(--color-primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(68, 97, 242, 0.1);
+        }
+        
+        .form-input i {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-secondary);
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+        }
+        
+        .forgot-password {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .form-submit {
+            margin-bottom: 24px;
+        }
+        
+        .login-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .login-btn:hover {
+            background-color: var(--color-primary-dark);
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+        
+        .register-link a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: var(--color-border);
+        }
+        
+        .divider::before {
+            margin-right: 16px;
+        }
+        
+        .divider::after {
+            margin-left: 16px;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--color-background);
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .social-btn:hover {
+            background-color: var(--color-primary-light);
+            color: white;
+            border-color: var(--color-primary-light);
+        }
+        
+        .social-btn i {
+            font-size: 20px;
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 24px;
+        }
+        
+        .back-to-home a {
+            color: var(--color-text-secondary);
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-to-home a:hover {
+            color: var(--color-primary);
+        }
+        
+        .back-to-home i {
+            margin-right: 8px;
+        }
+        
+        .login-tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        
+        .login-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .login-tab.active {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        
+        .login-tab:hover {
+            background-color: var(--color-primary-light);
+        }
+        
+        .login-form {
+            display: none;
+        }
+        
+        .login-form.active {
+            display: block;
+        }
+        
+        .qr-code-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .qr-code {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .qr-tip {
+            text-align: center;
+            margin-top: 16px;
+            color: var(--color-text-secondary);
+        }
+        
+        .qr-timer {
+            text-align: center;
+            margin-top: 12px;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+        
+        .qr-refresh {
+            text-align: center;
+            margin-top: 16px;
+            color: var(--color-primary);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .qr-refresh:hover {
+            text-decoration: underline;
+        }
+        
+        .verification-code {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .verification-code .form-input {
+            flex-grow: 1;
+        }
+        
+        .verification-code button {
+            min-width: 120px;
+            padding: 0 12px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color var(--transition-fast);
+        }
+        
+        .verification-code button:hover {
+            background-color: var(--color-primary-dark);
+        }
+        
+        .verification-code button:disabled {
+            background-color: var(--color-border);
+            color: var(--color-text-secondary);
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-md);
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition-fast);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(106, 77, 243, 0.05);
+            color: var(--color-primary-dark);
+        }
+        
+        .form-error {
+            color: var(--color-error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-group.error .form-control {
+            border-color: var(--color-error);
+            background-color: rgba(255, 73, 73, 0.05);
+        }
+        
+        .form-group.error .form-error {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-logo">
+                <h1>万汇网</h1>
+                <p>多领域资源聚合平台</p>
+            </div>
+                <h2 class="login-title">欢迎回来</h2>
+                <p class="login-subtitle">请登录你的账户</p>
+            </div>
+            
+            <div class="login-tabs">
+                <div class="login-tab active" data-tab="pwd">密码登录</div>
+                <div class="login-tab" data-tab="code">手机验证码登录</div>
+                <div class="login-tab" data-tab="wechat">微信登录</div>
+        </div>
+
+            <div id="pwdForm" class="login-form active">
+            <form id="loginForm">
+                <div class="form-group">
+                        <label for="username">用户名或邮箱</label>
+                        <div class="form-input">
+                            <input type="text" id="username" name="username" placeholder="请输入用户名或邮箱" required>
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <div class="form-error" id="username-error">用户名不存在，请先注册</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <div class="form-input">
+                            <input type="password" id="password" name="password" placeholder="请输入密码" required>
+                            <i class="bi bi-lock"></i>
+                        </div>
+                        <div class="form-error" id="password-error">密码错误，请重新输入</div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember-me" name="remember-me">
+                            <label for="remember-me">记住我</label>
+                        </div>
+                        <a href="#" class="forgot-password">忘记密码？</a>
+                    </div>
+                    
+                    <div class="form-submit">
+                        <button type="submit" class="login-btn">登录</button>
+                    </div>
+                    
+                    <div class="register-link">
+                        还没有账户？<a href="register.html">立即注册</a>
+                    </div>
+                    
+                    <div class="divider">或使用以下方式登录</div>
+                    
+                    <div class="social-login">
+                        <button type="button" class="social-btn" title="微信登录">
+                            <i class="bi bi-wechat"></i>
+                        </button>
+                        <button type="button" class="social-btn" title="QQ登录">
+                            <i class="bi bi-tencent-qq"></i>
+                        </button>
+                        <button type="button" class="social-btn" title="微博登录">
+                            <i class="bi bi-sina-weibo"></i>
+                        </button>
+                        <button type="button" class="social-btn" title="GitHub登录">
+                            <i class="bi bi-github"></i>
+                        </button>
+                    </div>
+                </form>
+                </div>
+            
+            <div id="codeForm" class="login-form">
+                <form id="phoneLoginForm">
+                <div class="form-group">
+                        <label for="phone">手机号码</label>
+                        <div class="form-input">
+                            <input type="tel" id="phone" name="phone" placeholder="请输入手机号码" required>
+                            <i class="bi bi-phone"></i>
+                        </div>
+                </div>
+                    
+                <div class="form-group">
+                        <label for="sms-code">短信验证码</label>
+                        <div class="verification-code">
+                            <div class="form-input">
+                                <input type="text" id="sms-code" name="sms-code" placeholder="请输入短信验证码" required>
+                                <i class="bi bi-shield-lock"></i>
+                            </div>
+                            <button type="button" id="sendSmsBtn">获取验证码</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember-phone" name="remember-phone">
+                            <label for="remember-phone">记住我</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-submit">
+                    <button type="submit" class="login-btn">登录</button>
+                    </div>
+                    
+                    <div class="register-link">
+                        还没有账户？<a href="register.html">立即注册</a>
+                    </div>
+                    
+                    <div class="divider">或使用以下方式登录</div>
+                    
+                    <div class="social-login">
+                        <button type="button" class="social-btn" title="微信登录">
+                            <i class="bi bi-wechat"></i>
+                        </button>
+                        <button type="button" class="social-btn" title="QQ登录">
+                            <i class="bi bi-tencent-qq"></i>
+                        </button>
+                        <button type="button" class="social-btn" title="微博登录">
+                            <i class="bi bi-sina-weibo"></i>
+                        </button>
+                        <button type="button" class="social-btn" title="GitHub登录">
+                            <i class="bi bi-github"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="wechatForm" class="login-form">
+                <div class="qr-code-container">
+                    <div class="qr-code">
+                        <!-- 微信二维码实现正方形 -->
+                        <img src="./image\icons\微信.png" alt="微信扫码登录" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="qr-tip">
+                        <p>请使用微信扫一扫功能</p>
+                        <p>扫描上方二维码完成登录</p>
+                    </div>
+                    <div class="qr-timer">
+                        <span>二维码有效期：<span id="qr-countdown">120</span>秒</span>
+                    </div>
+                    <div class="qr-refresh">刷新二维码</div>
+                </div>
+            </div>
+            
+            <div class="back-to-home">
+                <a href="index.html">
+                    <i class="bi bi-arrow-left"></i>
+                    返回首页
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/logout-handler.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 用户注册信息管理
+            const userManager = {
+                // 获取所有注册用户
+                getAllUsers: function() {
+                    const users = localStorage.getItem('registeredUsers');
+                    return users ? JSON.parse(users) : [];
+                },
+                
+                // 通过用户名或邮箱查找用户
+                findUser: function(usernameOrEmail) {
+                    // 先检查是否是管理员账号
+                    const adminAccount = JSON.parse(localStorage.getItem('adminAccount') || '{}');
+                    if (adminAccount.username === usernameOrEmail) {
+                        return adminAccount;
+                    }
+                    
+                    // 然后检查普通用户
+                    const users = this.getAllUsers();
+                    return users.find(user => 
+                        user.username === usernameOrEmail || 
+                        user.email === usernameOrEmail
+                    );
+                },
+                
+                // 通过手机号查找用户
+                findUserByPhone: function(phone) {
+                    // 先检查是否是管理员账号
+                    const adminAccount = JSON.parse(localStorage.getItem('adminAccount') || '{}');
+                    if (adminAccount.phone === phone) {
+                        return adminAccount;
+                    }
+                    
+                    // 然后检查普通用户
+                    const users = this.getAllUsers();
+                    return users.find(user => user.phone === phone);
+                },
+                
+                // 验证密码
+                validatePassword: function(user, password) {
+                    return user && user.password === password;
+                },
+                
+                // 将用户注册信息添加到存储中（仅用于模拟测试）
+                registerTestUsers: function() {
+                    // 如果已经有注册用户，不再添加测试用户
+                    if (this.getAllUsers().length > 0) return;
+                    
+                    // 添加一些测试用户
+                    const testUsers = [
+                        {
+                            username: 'test',
+                            email: 'test@example.com',
+                            password: '12345678',
+                            phone: '13800138000'
+                        },
+                        {
+                            username: 'admin',
+                            email: 'admin@example.com',
+                            password: 'admin123',
+                            phone: '13900139000'
+                        }
+                    ];
+                    
+                    localStorage.setItem('registeredUsers', JSON.stringify(testUsers));
+                }
+            };
+            
+            // 添加测试用户（实际应用中应通过注册页面添加）
+            userManager.registerTestUsers();
+            
+            const loginTabs = document.querySelectorAll('.login-tab');
+            const loginForms = document.querySelectorAll('.login-form');
+            
+            // 清除表单错误显示
+            function clearFormErrors() {
+                document.querySelectorAll('.form-group').forEach(group => {
+                    group.classList.remove('error');
+                });
+            }
+            
+            // 显示表单错误
+            function showError(elementId, message) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    const formGroup = element.closest('.form-group');
+                    formGroup.classList.add('error');
+                    
+                    const errorElement = document.getElementById(elementId + '-error');
+                    if (errorElement && message) {
+                        errorElement.textContent = message;
+                    }
+                }
+            }
+            
+            // 切换登录方式
+            loginTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // 更新标签激活状态
+                    loginTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 更新表单显示
+                    loginForms.forEach(form => form.classList.remove('active'));
+                    document.getElementById(`${tabId}Form`).classList.add('active');
+                    
+                    // 清除之前的错误信息
+                    clearFormErrors();
+                });
+            });
+            
+            // 账号密码登录表单
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    clearFormErrors();
+                    
+                    const username = document.getElementById('username').value.trim();
+                    const password = document.getElementById('password').value;
+                    
+                    // 检查用户是否已注册
+                    const user = userManager.findUser(username);
+                    
+                    if (!user) {
+                        showError('username', '该账号未注册，请先注册');
+                        return;
+                    }
+                    
+                    // 验证密码
+                    if (!userManager.validatePassword(user, password)) {
+                        showError('password', '密码错误，请重新输入');
+                        return;
+                    }
+                    
+                    // 登录成功
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', user.username);
+                    
+                    // 将用户信息存储以备后续使用
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        username: user.username,
+                        email: user.email,
+                        phone: user.phone
+                    }));
+                    
+                    // 尝试恢复用户的之前数据
+                    const restored = typeof restoreUserData === 'function' && restoreUserData(user.username);
+                    
+                    // 如果没有恢复成功，则使用默认头像
+                    if (!restored && !localStorage.getItem('userAvatar')) {
+                        localStorage.setItem('userAvatar', './image/image--01.png');
+                    }
+                    
+                    // 登录成功提示
+                    alert('登录成功！即将返回首页');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // 手机验证码登录
+            const phoneLoginForm = document.getElementById('phoneLoginForm');
+            const sendSmsBtn = document.getElementById('sendSmsBtn');
+            let countdown = 60;
+            
+            if (sendSmsBtn) {
+                sendSmsBtn.addEventListener('click', function() {
+                    const phoneInput = document.getElementById('phone');
+                    const phone = phoneInput.value.trim();
+                    
+                    // 验证手机号
+                    if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
+                        alert('请输入正确的手机号码');
+                        return;
+                    }
+                    
+                    // 检查手机号是否已注册
+                    const user = userManager.findUserByPhone(phone);
+                    if (!user) {
+                        alert('该手机号尚未注册，请先注册');
+                        return;
+                    }
+                    
+                    // 发送验证码模拟
+                    this.disabled = true;
+                    this.textContent = `重新获取(${countdown})`;
+                    
+                    const timer = setInterval(() => {
+                        countdown--;
+                        this.textContent = `重新获取(${countdown})`;
+                        
+                        if (countdown <= 0) {
+                            clearInterval(timer);
+                            this.disabled = false;
+                            this.textContent = '获取验证码';
+                            countdown = 60;
+                        }
+                    }, 1000);
+                    
+                    // 将验证码存储在会话中（实际应由服务器生成并发送）
+                    const verificationCode = Math.floor(1000 + Math.random() * 9000).toString();
+                    sessionStorage.setItem('verificationCode', verificationCode);
+                    sessionStorage.setItem('verificationPhone', phone);
+                    
+                    alert(`验证码已发送: ${verificationCode}`);
+                });
+            }
+            
+            if (phoneLoginForm) {
+                phoneLoginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const phone = document.getElementById('phone').value.trim();
+                    const smsCode = document.getElementById('sms-code').value.trim();
+                    
+                    // 验证手机号是否已注册
+                    const user = userManager.findUserByPhone(phone);
+                    if (!user) {
+                        alert('该手机号尚未注册，请先注册');
+                        return;
+                    }
+                    
+                    // 验证码校验
+                    const storedCode = sessionStorage.getItem('verificationCode');
+                    const storedPhone = sessionStorage.getItem('verificationPhone');
+                    
+                    if (!storedCode || storedPhone !== phone) {
+                        alert('请先获取验证码');
+                        return;
+                    }
+                    
+                    if (smsCode !== storedCode) {
+                        alert('验证码错误，请重新输入');
+                        return;
+                    }
+                    
+                    // 登录成功
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', user.username);
+                    localStorage.setItem('userPhone', phone);
+                    
+                    // 将用户信息存储以备后续使用
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        username: user.username,
+                        email: user.email,
+                        phone: user.phone
+                    }));
+                    
+                    // 尝试恢复用户的之前数据
+                    const restored = typeof restoreUserData === 'function' && restoreUserData(user.username);
+                    
+                    // 如果没有恢复成功，则使用默认头像
+                    if (!restored && !localStorage.getItem('userAvatar')) {
+                        localStorage.setItem('userAvatar', './image/image--01.png');
+                    }
+                    
+                    // 清除验证码信息
+                    sessionStorage.removeItem('verificationCode');
+                    sessionStorage.removeItem('verificationPhone');
+                    
+                    // 登录成功提示
+                    alert('手机验证码登录成功！即将返回首页');
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // 微信二维码倒计时
+            const qrCountdown = document.getElementById('qr-countdown');
+            let qrSeconds = 120;
+            
+            if (qrCountdown) {
+                const qrTimer = setInterval(() => {
+                    qrSeconds--;
+                    qrCountdown.textContent = qrSeconds;
+                    
+                    if (qrSeconds <= 0) {
+                        clearInterval(qrTimer);
+                        qrCountdown.textContent = '已过期';
+                    }
+                }, 1000);
+            }
+            
+            // 刷新二维码
+            const qrRefresh = document.querySelector('.qr-refresh');
+            if (qrRefresh) {
+                qrRefresh.addEventListener('click', function() {
+                    const qrImg = document.querySelector('.qr-code img');
+                    
+                    // 添加时间戳避免缓存
+                    qrImg.src = `./website_image/qrcode.png?t=${Date.now()}`;
+                    
+                    // 重置倒计时
+                    qrSeconds = 120;
+                    qrCountdown.textContent = qrSeconds;
+                    
+                    // 模拟微信扫码
+                    simulateWechatLogin();
+                });
+            }
+            
+            // 微信扫码模拟
+            function simulateWechatLogin() {
+                // 创建扫码动画元素
+                const qrCodeContainer = document.querySelector('.qr-code');
+                
+                // 如果已经存在扫码遮罩，则删除
+                const existingOverlay = document.querySelector('.qr-scan-overlay');
+                if (existingOverlay) {
+                    existingOverlay.remove();
+                }
+                
+                // 创建扫码遮罩元素
+                const scanOverlay = document.createElement('div');
+                scanOverlay.className = 'qr-scan-overlay';
+                scanOverlay.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    display: none;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    color: white;
+                    z-index: 10;
+                `;
+                
+                scanOverlay.innerHTML = `
+                    <i class="bi bi-check-circle" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <span style="font-size: 18px; font-weight: 500;">扫描成功</span>
+                    <p style="font-size: 14px; margin-top: 8px;">请在微信中确认登录</p>
+                `;
+                
+                qrCodeContainer.appendChild(scanOverlay);
+                
+                // 模拟扫码过程
+                setTimeout(() => {
+                    scanOverlay.style.display = 'flex';
+                    
+                    // 几秒后模拟登录成功
+                    setTimeout(() => {
+                        const username = '微信用户';
+                        
+                        // 设置登录状态
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('username', username);
+                        
+                        // 尝试恢复用户的之前数据
+                        const restored = typeof restoreUserData === 'function' && restoreUserData(username);
+                        
+                        // 如果没有恢复成功，则使用默认头像
+                        if (!restored && !localStorage.getItem('userAvatar')) {
+                            localStorage.setItem('userAvatar', './image/image--01.png');
+                        }
+                        
+                        // 登录成功提示
+                        alert('微信扫码登录成功！即将返回首页');
+                        window.location.href = 'index.html';
+                    }, 3000);
+                }, 2000);
+            }
+            
+            // 社交媒体登录模拟
+            const socialBtns = document.querySelectorAll('.social-btn');
+            socialBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const socialType = this.getAttribute('title') || '第三方账号';
+                    const socialName = socialType.replace('登录', '');
+                    const username = `${socialName}用户`;
+                    
+                    // 设置登录状态
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', username);
+                    
+                    // 尝试恢复用户的之前数据
+                    const restored = typeof restoreUserData === 'function' && restoreUserData(username);
+                    
+                    // 如果没有恢复成功，则使用默认头像
+                    if (!restored && !localStorage.getItem('userAvatar')) {
+                        localStorage.setItem('userAvatar', './image/image--01.png');
+                    }
+                    
+                    // 登录成功提示
+                    alert(`${socialType}成功！即将返回首页`);
+                    window.location.href = 'index.html';
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

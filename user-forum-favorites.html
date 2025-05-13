@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="万汇网 - 我的收藏帖子">
+    <title>我的收藏帖子 | 万汇网</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/forum.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .favorites-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .favorites-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            justify-content: space-between;
+        }
+        
+        .favorites-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .favorites-title p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .search-filter {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .search-filter input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            font-size: 16px;
+        }
+        
+        .search-filter input:focus {
+            outline: none;
+            border-color: #6366F1;
+        }
+        
+        .search-filter button {
+            padding: 0 20px;
+            background-color: #6366F1;
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+        }
+        
+        .empty-favorites {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+        
+        .empty-favorites i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .empty-favorites h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .empty-favorites a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background-color: #6366F1;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #6366F1;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            color: #6366F1;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #6366F1;
+        }
+        
+        .tab:hover {
+            color: #6366F1;
+        }
+        
+        .post-list {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>万汇网</h1>
+                <p>多领域资源聚合平台</p>
+            </div>
+            
+            <div class="header-actions">
+                <button class="language-toggle" id="languageToggle">
+                    <i class="bi bi-globe"></i>
+                    <span id="currentLang">中文</span>
+                </button>
+                <div id="user-actions">
+                    <div class="user-dropdown">
+                        <button class="user-btn">
+                            <img id="headerAvatarImg" src="./image/image--01.png" alt="用户头像" class="user-avatar-small">
+                            <span id="headerUsername">用户名</span>
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="user-profile.html">
+                                <i class="bi bi-person"></i>个人中心
+                            </a>
+                            <a href="user-mysites.html">
+                                <i class="bi bi-globe"></i>我的网站
+                            </a>
+                            <a href="user-favorites.html">
+                                <i class="bi bi-star"></i>我的收藏
+                            </a>
+                            <a href="user-forum-favorites.html" class="active">
+                                <i class="bi bi-bookmark"></i>帖子收藏
+                            </a>
+                            <a href="user-settings.html">
+                                <i class="bi bi-gear"></i>账号设置
+                            </a>
+                            <a href="#" id="logoutBtn">
+                                <i class="bi bi-box-arrow-right"></i>退出登录
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主体内容 -->
+    <main>
+        <div class="container">
+            <a href="forum.html" class="back-link">
+                <i class="bi bi-arrow-left"></i> 返回论坛
+            </a>
+            
+            <div class="favorites-container">
+                <div class="favorites-header">
+                    <div class="favorites-title">
+                        <h1>我的收藏帖子</h1>
+                        <p>管理您在论坛收藏的所有帖子</p>
+                    </div>
+                    <div class="favorites-count">
+                        <span id="totalCount">0</span> 个收藏
+                    </div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="all">全部帖子</div>
+                    <div class="tab" data-tab="academic">学术交流</div>
+                    <div class="tab" data-tab="design">设计讨论</div>
+                    <div class="tab" data-tab="ai">AI技术</div>
+                    <div class="tab" data-tab="media">影视资源</div>
+                    <div class="tab" data-tab="questions">问答专区</div>
+                </div>
+                
+                <div class="search-filter">
+                    <input type="text" id="searchFavorites" placeholder="搜索收藏的帖子...">
+                    <button type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                
+                <div id="postList" class="post-list">
+                    <!-- 收藏的帖子列表会通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>关于我们</h3>
+                    <p>万汇网是一个汇集学术、设计、AI和影视资源的专业导航平台，致力于为用户提供高质量的资源聚合服务。</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="index.html#academic">学术资源</a></li>
+                        <li><a href="index.html#design">设计资源</a></li>
+                        <li><a href="index.html#ai">AI网站</a></li>
+                        <li><a href="index.html#media">影视资源</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h3>关注我们</h3>
+                    <div class="social-icons">
+                        <a href="#" target="_blank">
+                            <i class="bi bi-wechat"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi bi-tencent-qq"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi bi-chat-dots"></i>
+                        </a>
+                        <a href="#" target="_blank">
+                            <i class="bi bi-person-circle"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-feedback">
+                    <h3>意见反馈</h3>
+                    <form class="feedback-form">
+                        <input type="email" placeholder="您的邮箱" required>
+                        <textarea placeholder="您的意见或建议" required></textarea>
+                        <button type="submit">发送反馈</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 万汇网. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 微信二维码模态框 -->
+    <div class="qr-modal" id="wechatQrModal" style="display: none;">
+        <div class="qr-container">
+            <button class="qr-close" id="closeWechatQr"><i class="bi bi-x-lg"></i></button>
+            <div class="qr-header">
+                <div class="qr-title">扫码关注我们的微信公众号</div>
+                <div class="qr-subtitle">获取最新资源与活动信息</div>
+            </div>
+            <div class="qr-code">
+                <img src="./image/icons/微信公众号.jpg" alt="微信公众号二维码">
+            </div>
+            <div class="qr-tip">使用微信扫一扫，获取更多精彩内容</div>
+        </div>
+    </div>
+    
+    <script src="js/user-auth.js"></script>
+    <script src="js/user-forum-favorites.js"></script>
+    <script>
+        // 微信二维码展示功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const wechatIcon = document.querySelector('.social-icons a:first-child');
+            const wechatQrModal = document.getElementById('wechatQrModal');
+            const closeWechatQr = document.getElementById('closeWechatQr');
+            
+            if (wechatIcon && wechatQrModal && closeWechatQr) {
+                // 点击微信图标显示二维码
+                wechatIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    wechatQrModal.style.display = 'flex';
+                });
+                
+                // 点击关闭按钮隐藏二维码
+                closeWechatQr.addEventListener('click', function() {
+                    wechatQrModal.style.display = 'none';
+                });
+                
+                // 点击模态框背景区域隐藏二维码
+                wechatQrModal.addEventListener('click', function(e) {
+                    if (e.target === wechatQrModal) {
+                        wechatQrModal.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="万汇网 - 我的网站">
+    <title>我的网站 | 万汇网</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .mysites-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mysites-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            justify-content: space-between;
+        }
+        
+        .mysites-title h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .mysites-title p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .mysites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .mysite-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            background-color: #fff;
+        }
+        
+        .mysite-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .mysite-details {
+            padding: 15px;
+        }
+        
+        .mysite-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .mysite-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .mysite-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mysite-visit {
+            background-color: #6366F1;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+        
+        .mysite-visit:hover {
+            background-color: #4F46E5;
+        }
+        
+        .mysite-visit i {
+            margin-right: 5px;
+        }
+        
+        .delete-site {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+        
+        .delete-site:hover {
+            color: #d32f2f;
+        }
+        
+        .empty-mysites {
+            text-align: center;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #666;
+        }
+        
+        .empty-mysites i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+        
+        .empty-mysites h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .empty-mysites p {
+            margin-bottom: 20px;
+            max-width: 500px;
+        }
+        
+        .empty-mysites a {
+            background-color: #6366F1;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .empty-mysites a:hover {
+            background-color: #4F46E5;
+        }
+        
+        .search-filter {
+            margin-bottom: 20px;
+            display: flex;
+            position: relative;
+        }
+        
+        .search-filter input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #eee;
+            border-radius: 6px 0 0 6px;
+            font-size: 14px;
+        }
+        
+        .search-filter button {
+            padding: 0 20px;
+            background-color: #6366F1;
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+        }
+        
+        /* 添加用户下拉菜单样式 */
+        .user-dropdown {
+            position: relative;
+        }
+        
+        .user-btn {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .user-btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+            object-fit: cover;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            display: none;
+            z-index: 100;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .dropdown-menu a.active {
+            background-color: #f0f0ff;
+            color: #6366F1;
+        }
+        
+        .dropdown-menu i {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal .site-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .modal .site-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal .site-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 10px;
+        }
+
+        .modal .site-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .modal .site-url {
+            color: #6b7280;
+            font-size: 0.875rem;
+            word-break: break-all;
+        }
+
+        .modal .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal .search-box input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .modal .search-box button {
+            padding: 8px 16px;
+            background-color: #6366F1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .icon-preview {
+            position: relative;
+            width: 64px;
+            height: 64px;
+        }
+        
+        .icon-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .icon-preview::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .icon-preview:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>万汇网</h1>
+                <p>多领域资源聚合平台</p>
+            </div>
+            
+            <div class="header-actions">
+                <button class="language-toggle" id="languageToggle">
+                    <i class="bi bi-globe"></i>
+                    <span id="currentLang">中文</span>
+                </button>
+                <div id="user-actions">
+                    <div class="user-dropdown">
+                        <button class="user-btn">
+                            <img id="headerAvatarImg" src="./image/image--01.png" alt="用户头像" class="user-avatar-small">
+                            <span id="headerUsername">用户名</span>
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="user-profile.html">
+                                <i class="bi bi-person"></i>个人中心
+                            </a>
+                            <a href="user-mysites.html" class="active">
+                                <i class="bi bi-globe"></i>我的网站
+                            </a>
+                            <a href="user-favorites.html">
+                                <i class="bi bi-star"></i>我的收藏
+                            </a>
+                            <a href="user-forum-favorites.html">
+                                <i class="bi bi-bookmark"></i>帖子收藏
+                            </a>
+                            <a href="user-settings.html">
+                                <i class="bi bi-gear"></i>账号设置
+                            </a>
+                            <a href="#" id="logoutBtn">
+                                <i class="bi bi-box-arrow-right"></i>退出登录
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主体内容 -->
+    <main>
+        <div class="container">
+            <a href="index.html" class="back-link">
+                <i class="bi bi-arrow-left"></i> 返回首页
+            </a>
+            
+            <div class="mysites-container">
+                <div class="mysites-header">
+                    <div class="mysites-title">
+                        <h1>我的网站</h1>
+                        <p>管理您添加的所有自定义网站</p>
+                    </div>
+                    <div class="mysites-count">
+                        <span id="totalCount">0</span> 个网站
+                    </div>
+                </div>
+                
+                <div class="search-filter">
+                    <input type="text" id="searchMySites" placeholder="搜索我的网站...">
+                    <button type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                
+                <div id="mysitesGrid" class="mysites-grid">
+                    <!-- 网站内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于万汇网</h3>
+                    <p>万汇网是一个综合性资源导航平台，旨在为用户提供高质量的学术、设计、AI和影视资源链接，提升工作学习效率。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="user-profile.html">个人中心</a></li>
+                        <li><a href="forum.html">交流社区</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>有任何问题或建议？请随时联系我们。</p>
+                    <p>邮箱: support@wanhui.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 万汇网 版权所有</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- 添加网站模态框 -->
+    <div id="customSiteModal" class="modal">
+        <div class="modal-content" style="width: 80%; max-width: 600px; padding: 20px;">
+            <div class="modal-header">
+                <h2>添加网站</h2>
+                <span class="close" onclick="document.getElementById('customSiteModal').style.display='none'">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="addSiteForm" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="form-group">
+                        <label for="siteNameType">选择添加方式</label>
+                        <select id="siteNameType" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px;">
+                            <option value="preset">选择预设网站</option>
+                            <option value="custom">自定义网站</option>
+                        </select>
+                    </div>
+
+                    <div id="presetSiteDiv" class="form-group">
+                        <label for="siteName">预设网站</label>
+                        <select id="siteName" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <option value="">--请选择网站--</option>
+                        </select>
+                    </div>
+
+                    <div id="customSiteDiv" class="form-group" style="display: none;">
+                        <label for="customSiteName">自定义网站名称</label>
+                        <input type="text" id="customSiteName" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" placeholder="请输入网站名称">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="siteUrl">网站地址</label>
+                        <input type="url" id="siteUrl" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" placeholder="请输入网站地址">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>网站图标</label>
+                        <div style="display: flex; gap: 15px; align-items: start; margin-top: 10px;">
+                            <div class="icon-preview" style="position: relative;">
+                                <img id="siteIconPreview" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA7klEQVQ4jZ2TMUoDQRSGvzdZCGhhYRkQbAQbwTKVnQew8AiWaY9gYZsrWFoJVpZioUUaIZ1dOkHELBt3x2JndXfCMuL/weP93zczj/defHECVK3I0+TlUpPmQkRQVR4eH6aNC9XZWVCp3Bljfh3ddd0FCTp0ule5zABN0zuM+RCRz8zzvmZ7K4r7jbcN3w+25qMoFmAjSdLjnMSL88v7baJumy7J87wPPDnny+8OdJyZHQcUReGcc3sRSSYZTyYT5A9RXdft1XVNFEU4506bpjnY1mFZlp7v+5cwDDeA9y3T5pv/Dqyqz6p6/QWe8lLxLSCcSQAAAABJRU5ErkJggg==" 
+                                     alt="网站图标预览" 
+                                     style="width: 64px; height: 64px; border-radius: 8px; object-fit: cover; border: 1px solid #ddd;">
+                            </div>
+                            <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="file" id="siteIconFile" accept="image/*" style="display: none;">
+                                    <button type="button" id="uploadIconBtn" style="padding: 8px 16px; background-color: #6366F1; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                        上传图标
+                                    </button>
+                                    <button type="button" id="useDefaultIconBtn" style="padding: 8px 16px; background-color: #e5e7eb; color: #374151; border: none; border-radius: 4px; cursor: pointer;">
+                                        使用默认图标
+                                    </button>
+                                </div>
+                                <div class="form-group" style="margin-top: 10px;">
+                                    <input type="url" id="siteIconUrl" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" placeholder="或输入图标URL">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" style="background-color: #6366F1; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">
+                        添加网站
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 微信二维码模态框 -->
+    <div class="qr-modal" id="wechatQrModal" style="display: none;">
+        <div class="qr-container">
+            <button class="qr-close" id="closeWechatQr"><i class="bi bi-x-lg"></i></button>
+            <div class="qr-header">
+                <div class="qr-title">扫码关注我们的微信公众号</div>
+                <div class="qr-subtitle">获取最新资源与活动信息</div>
+            </div>
+            <div class="qr-code">
+                <img src="./image/icons/微信公众号.jpg" alt="微信公众号二维码">
+            </div>
+            <div class="qr-tip">使用微信扫一扫，获取更多精彩内容</div>
+        </div>
+    </div>
+    
+    <script src="js/custom-sites.js"></script>
+    <script src="js/user-auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查用户登录状态
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // 获取用户信息
+            const username = localStorage.getItem('username');
+            const userAvatar = localStorage.getItem('userAvatar');
+            
+            // 更新用户信息显示
+            document.getElementById('headerUsername').textContent = username;
+            document.getElementById('headerAvatarImg').src = userAvatar;
+            
+            // 初始化用户下拉菜单
+            const userBtn = document.querySelector('.user-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            if (userBtn && dropdownMenu) {
+                userBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('show');
+                });
+                
+                // 点击页面其他区域关闭下拉菜单
+                document.addEventListener('click', function(e) {
+                    if (!userBtn.contains(e.target) && dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+            }
+            
+            // 加载自定义网站
+            loadMySites();
+            
+            // 初始化退出登录按钮
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 清除用户信息
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                localStorage.removeItem('userAvatar');
+                
+                // 提示用户已退出登录
+                alert('您已成功退出登录');
+                
+                // 重定向到首页
+                window.location.href = 'index.html';
+            });
+            
+            // 初始化搜索功能
+            const searchInput = document.getElementById('searchMySites');
+            searchInput.addEventListener('input', function() {
+                filterMySites(this.value.trim().toLowerCase());
+            });
+            
+            // 搜索按钮点击事件
+            const searchButton = document.querySelector('.search-filter button');
+            searchButton.addEventListener('click', function() {
+                const searchText = searchInput.value.trim();
+                if (!searchText) {
+                    // 如果搜索框为空，跳转到首页
+                    window.location.href = 'index.html';
+                } else {
+                    // 否则执行搜索
+                    filterMySites(searchText.toLowerCase());
+                }
+            });
+            
+            // 添加自定义网站按钮
+            document.querySelector('.mysites-title').insertAdjacentHTML('afterend', 
+                `<button id="addNewSite" class="primary-btn" style="background-color: #6366F1; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                    <i class="bi bi-plus"></i> 添加网站
+                </button>`
+            );
+            
+            document.getElementById('addNewSite').addEventListener('click', function() {
+                // 加载网站下拉列表数据
+                loadWebsiteOptions();
+                // 重置表单
+                const siteNameSelect = document.getElementById('siteName');
+                const siteUrlInput = document.getElementById('siteUrl');
+                const siteIconUrlInput = document.getElementById('siteIconUrl');
+                
+                if (siteNameSelect) siteNameSelect.value = '';
+                if (siteUrlInput) siteUrlInput.value = '';
+                if (siteIconUrlInput) siteIconUrlInput.value = '';
+                
+                document.getElementById('customSiteModal').style.display = 'flex';
+            });
+            
+            // 加载网站下拉列表数据
+            loadWebsiteOptions();
+            
+            // 为网站名称下拉框添加change事件
+            const siteNameSelect = document.getElementById('siteName');
+            if (siteNameSelect) {
+                siteNameSelect.addEventListener('change', function() {
+                    updateSiteUrl(this.value);
+                });
+            }
+        });
+        
+        // 加载自定义网站数据
+        function loadMySites() {
+            // 从localStorage获取自定义网站数据
+            const customSites = JSON.parse(localStorage.getItem('customSites') || '[]');
+            const mysitesGrid = document.getElementById('mysitesGrid');
+            const totalCount = document.getElementById('totalCount');
+            
+            // 更新网站计数
+            totalCount.textContent = customSites.length;
+            
+            // 如果没有自定义网站，显示空状态
+            if (customSites.length === 0) {
+                mysitesGrid.innerHTML = `
+                    <div class="empty-mysites" style="grid-column: 1 / -1;">
+                        <i class="bi bi-globe"></i>
+                        <h3>暂无自定义网站</h3>
+                        <p>您还没有添加任何自定义网站，点击"添加网站"按钮来添加您常用的网站</p>
+                        <a href="#" id="addEmptySite">添加网站</a>
+                    </div>
+                `;
+                
+                document.getElementById('addEmptySite').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 加载网站下拉列表数据
+                    loadWebsiteOptions();
+                    document.getElementById('customSiteModal').style.display = 'flex';
+                });
+                
+                return;
+            }
+            
+            // 渲染自定义网站列表
+            mysitesGrid.innerHTML = '';
+            
+            customSites.forEach(site => {
+                const card = document.createElement('div');
+                card.className = 'mysite-card';
+                card.innerHTML = `
+                    <div class="mysite-details">
+                        <div class="mysite-name">
+                            <img src="${site.icon || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA7klEQVQ4jZ2TMUoDQRSGvzdZCGhhYRkQbAQbwTKVnQew8AiWaY9gYZsrWFoJVpZioUUaIZ1dOkHELBt3x2JndXfCMuL/weP93zczj/defHECVK3I0+TlUpPmQkRQVR4eH6aNC9XZWVCp3Bljfh3ddd0FCTp0ule5zABN0zuM+RCRz8zzvmZ7K4r7jbcN3w+25qMoFmAjSdLjnMSL88v7baJumy7J87wPPDnny+8OdJyZHQcUReGcc3sRSSYZTyYT5A9RXdft1XVNFEU4506bpjnY1mFZlp7v+5cwDDeA9y3T5pv/Dqyqz6p6/QWe8lLxLSCcSQAAAABJRU5ErkJggg=='}" alt="${site.name}" class="mysite-icon">
+                            ${site.name}
+                        </div>
+                        <div class="mysite-actions">
+                            <a href="${site.url}" class="mysite-visit" target="_blank">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                                访问网站
+                            </a>
+                            <button class="delete-site" data-id="${site.id}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                mysitesGrid.appendChild(card);
+                
+                // 添加删除事件
+                card.querySelector('.delete-site').addEventListener('click', function() {
+                    deleteCustomSite(this.getAttribute('data-id'));
+                });
+            });
+        }
+        
+        // 过滤自定义网站
+        function filterMySites(query) {
+            const customSites = JSON.parse(localStorage.getItem('customSites') || '[]');
+            const filteredSites = customSites.filter(site => 
+                site.name.toLowerCase().includes(query)
+            );
+            
+            const mysitesGrid = document.getElementById('mysitesGrid');
+            
+            // 如果没有匹配的网站
+            if (filteredSites.length === 0) {
+                mysitesGrid.innerHTML = `
+                    <div class="empty-mysites" style="grid-column: 1 / -1;">
+                        <i class="bi bi-search"></i>
+                        <h3>没有找到匹配的网站</h3>
+                        <p>尝试使用不同的搜索词或添加新的自定义网站</p>
+                        <a href="#" id="clearSearch">清除搜索</a>
+                    </div>
+                `;
+                
+                document.getElementById('clearSearch').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('searchMySites').value = '';
+                    loadMySites();
+                });
+                
+                return;
+            }
+            
+            // 渲染过滤后的网站列表
+            mysitesGrid.innerHTML = '';
+            
+            filteredSites.forEach(site => {
+                const card = document.createElement('div');
+                card.className = 'mysite-card';
+                card.innerHTML = `
+                    <div class="mysite-details">
+                        <div class="mysite-name">
+                            <img src="${site.icon || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA7klEQVQ4jZ2TMUoDQRSGvzdZCGhhYRkQbAQbwTKVnQew8AiWaY9gYZsrWFoJVpZioUUaIZ1dOkHELBt3x2JndXfCMuL/weP93zczj/defHECVK3I0+TlUpPmQkRQVR4eH6aNC9XZWVCp3Bljfh3ddd0FCTp0ule5zABN0zuM+RCRz8zzvmZ7K4r7jbcN3w+25qMoFmAjSdLjnMSL88v7baJumy7J87wPPDnny+8OdJyZHQcUReGcc3sRSSYZTyYT5A9RXdft1XVNFEU4506bpjnY1mFZlp7v+5cwDDeA9y3T5pv/Dqyqz6p6/QWe8lLxLSCcSQAAAABJRU5ErkJggg=='}" alt="${site.name}" class="mysite-icon">
+                            ${site.name}
+                        </div>
+                        <div class="mysite-actions">
+                            <a href="${site.url}" class="mysite-visit" target="_blank">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                                访问网站
+                            </a>
+                            <button class="delete-site" data-id="${site.id}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                mysitesGrid.appendChild(card);
+                
+                // 添加删除事件
+                card.querySelector('.delete-site').addEventListener('click', function() {
+                    deleteCustomSite(this.getAttribute('data-id'));
+                });
+            });
+        }
+        
+        // 删除自定义网站
+        function deleteCustomSite(siteId) {
+            if (confirm('确定要删除这个网站吗？')) {
+                // 获取现有的自定义网站
+                let customSites = JSON.parse(localStorage.getItem('customSites') || '[]');
+                
+                // 过滤掉要删除的网站
+                customSites = customSites.filter(site => site.id !== siteId);
+                
+                // 保存到本地存储
+                localStorage.setItem('customSites', JSON.stringify(customSites));
+                
+                // 重新加载网站列表
+                loadMySites();
+                
+                // 显示删除成功提示
+                showToast('已成功删除网站');
+            }
+        }
+        
+        // 显示提示消息
+        function showToast(message) {
+            // 检查是否已存在toast元素
+            let toast = document.getElementById('custom-toast');
+            
+            // 如果不存在，创建一个
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'custom-toast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                toast.style.color = 'white';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = '4px';
+                toast.style.zIndex = '10000';
+                toast.style.transition = 'opacity 0.3s';
+                document.body.appendChild(toast);
+            }
+            
+            // 设置消息
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+        
+        // 加载网站下拉列表数据
+        function loadWebsiteOptions() {
+            const siteNameSelect = document.getElementById('siteName');
+            if (!siteNameSelect) return;
+            
+            // 发起请求获取teams.json数据
+            fetch('teams.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('无法加载网站数据');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 清空现有选项，保留默认选项
+                    siteNameSelect.innerHTML = '<option value="">--请选择网站--</option>';
+                    
+                    // 添加从teams.json加载的选项
+                    data.forEach(site => {
+                        const option = document.createElement('option');
+                        option.value = site.name;
+                        option.textContent = site.name;
+                        option.dataset.url = site.url; // 将URL存储为数据属性
+                        siteNameSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('加载网站数据出错:', error);
+                    showToast('加载网站数据失败');
+                });
+        }
+        
+        // 根据选择的网站名称更新网站地址
+        function updateSiteUrl(siteName) {
+            const siteNameSelect = document.getElementById('siteName');
+            const siteUrlInput = document.getElementById('siteUrl');
+            
+            if (!siteNameSelect || !siteUrlInput) return;
+            
+            // 查找选中的选项
+            const selectedOption = Array.from(siteNameSelect.options).find(option => option.value === siteName);
+            
+            if (selectedOption && selectedOption.dataset.url) {
+                // 设置网站地址
+                siteUrlInput.value = selectedOption.dataset.url;
+            } else {
+                // 清空网站地址
+                siteUrlInput.value = '';
+            }
+        }
+
+        // 微信二维码展示功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const wechatIcon = document.querySelector('.social-icons a:first-child');
+            const wechatQrModal = document.getElementById('wechatQrModal');
+            const closeWechatQr = document.getElementById('closeWechatQr');
+            
+            if (wechatIcon && wechatQrModal && closeWechatQr) {
+                // 点击微信图标显示二维码
+                wechatIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    wechatQrModal.style.display = 'flex';
+                });
+                
+                // 点击关闭按钮隐藏二维码
+                closeWechatQr.addEventListener('click', function() {
+                    wechatQrModal.style.display = 'none';
+                });
+                
+                // 点击模态框背景区域隐藏二维码
+                wechatQrModal.addEventListener('click', function(e) {
+                    if (e.target === wechatQrModal) {
+                        wechatQrModal.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

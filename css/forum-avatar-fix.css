@@ -1,0 +1,50 @@
+/* 论坛页面头像圆形修复 */
+
+/* 帖子列表中的头像 */
+.post-avatar img {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important; 
+    object-fit: cover !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+/* 热门主题中的头像 */
+.topic-avatar {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+/* 评论和回复中的头像 */
+.comment-avatar img, 
+.reply-avatar img {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+/* 帖子详情页中的作者头像 */
+.author-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+}
+
+/* 确保边框和其他样式不会干扰圆形显示 */
+.post-avatar,
+.topic-avatar,
+.comment-avatar,
+.reply-avatar {
+    border: none !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+} 

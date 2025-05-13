@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="万汇网 - 账号设置">
+    <title>账号设置 | 万汇网</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .settings-container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .settings-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .settings-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .settings-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .settings-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+        }
+        
+        .settings-tab {
+            padding: 12px 20px;
+            margin-right: 10px;
+            border: none;
+            background: none;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        .settings-tab:hover {
+            color: #4461F2;
+        }
+        
+        .settings-tab.active {
+            color: #4461F2;
+        }
+        
+        .settings-tab.active:after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #4461F2;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .settings-section {
+            display: none;
+        }
+        
+        .settings-section.active {
+            display: block;
+        }
+        
+        .settings-form {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            margin-bottom: 20px;
+        }
+        
+        .form-row label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-row input[type="text"],
+        .form-row input[type="email"],
+        .form-row input[type="password"],
+        .form-row select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-row input:focus,
+        .form-row select:focus {
+            border-color: #4461F2;
+            outline: none;
+        }
+        
+        .password-row {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 40px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .toggle-password:hover {
+            color: #4461F2;
+        }
+        
+        .form-info {
+            color: #666;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        
+        .settings-actions {
+            margin-top: 25px;
+            text-align: right;
+        }
+        
+        .form-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .save-btn {
+            background-color: #4461F2;
+            color: white;
+            margin-left: 10px;
+        }
+        
+        .cancel-btn {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .save-btn:hover {
+            background-color: #3351E2;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #e5e5e5;
+        }
+        
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .switch-container:last-child {
+            border-bottom: none;
+        }
+        
+        .switch-text {
+            flex: 1;
+        }
+        
+        .switch-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .switch-description {
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 15px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #4461F2;
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px #4461F2;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .danger-zone {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid #f87171;
+            border-radius: 8px;
+            background-color: #fef2f2;
+        }
+        
+        .danger-zone h3 {
+            color: #b91c1c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .danger-zone h3 i {
+            margin-right: 8px;
+        }
+        
+        .danger-zone p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .delete-account-btn {
+            background-color: #f87171;
+            color: white;
+        }
+        
+        .delete-account-btn:hover {
+            background-color: #ef4444;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #4461F2;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .back-link i {
+            margin-right: 5px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .settings-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+            }
+            
+            .settings-tab {
+                padding: 10px 15px;
+            }
+        }
+        
+        .field-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .field-row .form-row {
+            flex: 1;
+        }
+        
+        .settings-section-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>万汇网</h1>
+                <p>多领域资源聚合平台</p>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="搜索资源、工具或网站...">
+                <button type="submit" id="searchBtn">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            
+            <div class="header-actions">
+                <button class="analytics-btn" id="showAnalyticsBtn" title="数据分析">
+                    <i class="bi bi-bar-chart"></i>
+                </button>
+                <button class="language-toggle" id="languageToggle">
+                    <i class="bi bi-globe"></i>
+                    <span id="currentLang">中文</span>
+                </button>
+                <div id="guest-actions">
+                    <a href="login.html" class="login-btn">登录</a>
+                    <a href="register.html" class="register-btn">注册</a>
+                </div>
+                <div id="user-actions" style="display: none;">
+                    <div class="user-dropdown">
+                        <button class="user-btn">
+                            <img id="headerAvatarImg" src="./image/image--01.png" alt="用户头像" class="user-avatar-small">
+                            <span id="headerUsername">用户名</span>
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="user-profile.html">
+                                <i class="bi bi-person"></i>个人中心
+                            </a>
+                            <a href="user-mysites.html">
+                                <i class="bi bi-globe"></i>我的网站
+                            </a>
+                            <a href="user-favorites.html">
+                                <i class="bi bi-star"></i>我的收藏
+                            </a>
+                            <a href="user-forum-favorites.html">
+                                <i class="bi bi-bookmark"></i>帖子收藏
+                            </a>
+                            <a href="user-settings.html" class="active">
+                                <i class="bi bi-gear"></i>账号设置
+                            </a>
+                            <a href="#" id="logoutBtn">
+                                <i class="bi bi-box-arrow-right"></i>退出登录
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主体内容 -->
+    <main>
+        <div class="container">
+            <a href="index.html" class="back-link">
+                <i class="bi bi-arrow-left"></i> 返回首页
+            </a>
+            
+            <div class="settings-container">
+                <div class="settings-header">
+                    <h1>账号设置</h1>
+                    <p>在这里管理你的账号安全、通知和隐私设置</p>
+                </div>
+                
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-target="security">
+                        <i class="bi bi-shield-lock"></i> 账号安全
+                    </button>
+                    <button class="settings-tab" data-target="notifications">
+                        <i class="bi bi-bell"></i> 通知设置
+                    </button>
+                    <button class="settings-tab" data-target="privacy">
+                        <i class="bi bi-eye"></i> 隐私设置
+                    </button>
+                    <button class="settings-tab" data-target="login-sessions">
+                        <i class="bi bi-box-arrow-in-right"></i> 登录记录
+                    </button>
+                </div>
+                
+                <!-- 账号安全设置 -->
+                <div class="settings-section active" id="security-section">
+                    <h2 class="settings-section-title">账号安全设置</h2>
+                    
+                    <form class="settings-form">
+                        <div class="field-row">
+                            <div class="form-row">
+                                <label for="email">登录邮箱</label>
+                                <input type="email" id="email" value="example@mail.com">
+                                <div class="form-info">用于账号登录和接收重要通知</div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="phone">手机号码</label>
+                                <input type="text" id="phone" value="1381234****">
+                                <div class="form-info">用于账号安全验证和找回密码</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row password-row">
+                            <label for="current-password">当前密码</label>
+                            <input type="password" id="current-password" placeholder="输入当前密码">
+                            <i class="bi bi-eye toggle-password" data-target="current-password"></i>
+                        </div>
+                        
+                        <div class="field-row">
+                            <div class="form-row password-row">
+                                <label for="new-password">新密码</label>
+                                <input type="password" id="new-password" placeholder="设置新密码">
+                                <i class="bi bi-eye toggle-password" data-target="new-password"></i>
+                                <div class="form-info">密码至少包含8个字符、1个大写字母和1个数字</div>
+                            </div>
+                            
+                            <div class="form-row password-row">
+                                <label for="confirm-password">确认新密码</label>
+                                <input type="password" id="confirm-password" placeholder="再次输入新密码">
+                                <i class="bi bi-eye toggle-password" data-target="confirm-password"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <label for="security-question">安全问题</label>
+                            <select id="security-question">
+                                <option value="">选择安全问题</option>
+                                <option value="1" selected>您的出生城市是？</option>
+                                <option value="2">您的小学班主任姓名是？</option>
+                                <option value="3">您最喜欢的电影是？</option>
+                                <option value="4">您的第一辆车的品牌是？</option>
+                                <option value="5">您最喜欢的食物是？</option>
+                            </select>
+                            <div class="form-info">用于账号找回和身份验证</div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <label for="security-answer">安全问题答案</label>
+                            <input type="text" id="security-answer" value="安全答案已设置，点击修改">
+                        </div>
+                        
+                        <div class="settings-actions">
+                            <button type="button" class="form-button cancel-btn">取消</button>
+                            <button type="button" class="form-button save-btn">保存更改</button>
+                        </div>
+                    </form>
+                    
+                    <div class="danger-zone">
+                        <h3><i class="bi bi-exclamation-triangle"></i> 危险操作</h3>
+                        <p>删除账号是不可逆操作，删除后将无法恢复您的账号数据和收藏内容。</p>
+                        <button type="button" class="form-button delete-account-btn">删除我的账号</button>
+                    </div>
+                </div>
+                
+                <!-- 通知设置 -->
+                <div class="settings-section" id="notifications-section">
+                    <h2 class="settings-section-title">通知偏好设置</h2>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">邮件通知</div>
+                            <div class="switch-description">接收网站更新、活动和推荐资源的邮件通知</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">内容更新提醒</div>
+                            <div class="switch-description">当您收藏的资源有更新时通知您</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">安全提醒</div>
+                            <div class="switch-description">接收账号登录和安全相关的通知</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">网站公告</div>
+                            <div class="switch-description">接收网站重要公告和功能更新消息</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">站内消息</div>
+                            <div class="switch-description">启用站内消息通知提醒</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-actions">
+                        <button type="button" class="form-button cancel-btn">取消</button>
+                        <button type="button" class="form-button save-btn">保存更改</button>
+                    </div>
+                </div>
+                
+                <!-- 隐私设置 -->
+                <div class="settings-section" id="privacy-section">
+                    <h2 class="settings-section-title">隐私保护设置</h2>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">公开个人资料</div>
+                            <div class="switch-description">允许其他用户查看您的个人资料信息</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">公开收藏列表</div>
+                            <div class="switch-description">允许其他用户查看您的收藏内容</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">浏览历史记录</div>
+                            <div class="switch-description">记录您的浏览历史，以便提供个性化推荐</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">数据分析</div>
+                            <div class="switch-description">允许我们收集使用数据以改进服务质量</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <div class="switch-text">
+                            <div class="switch-title">个性化推荐</div>
+                            <div class="switch-description">根据您的兴趣和使用习惯推荐内容</div>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-actions">
+                        <button type="button" class="form-button cancel-btn">取消</button>
+                        <button type="button" class="form-button save-btn">保存更改</button>
+                    </div>
+                </div>
+                
+                <!-- 登录记录 -->
+                <div class="settings-section" id="login-sessions-section">
+                    <h2 class="settings-section-title">登录活动记录</h2>
+                    
+                    <div class="sessions-list">
+                        <div class="session-item">
+                            <div class="session-info">
+                                <div class="session-device">
+                                    <i class="bi bi-laptop"></i>
+                                    <div>
+                                        <div class="device-name">Windows PC - Chrome浏览器</div>
+                                        <div class="device-ip">IP: 116.23.28.xx - 广东省广州市</div>
+                                    </div>
+                                </div>
+                                <div class="session-time">
+                                    <div class="login-time">当前在线</div>
+                                    <div class="login-date">登录于 2023-04-20 15:30</div>
+                                </div>
+                                <button class="end-session-btn">结束会话</button>
+                            </div>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-info">
+                                <div class="session-device">
+                                    <i class="bi bi-phone"></i>
+                                    <div>
+                                        <div class="device-name">iPhone 13 - Safari浏览器</div>
+                                        <div class="device-ip">IP: 116.23.28.xx - 广东省广州市</div>
+                                    </div>
+                                </div>
+                                <div class="session-time">
+                                    <div class="login-time">最近活动: 5小时前</div>
+                                    <div class="login-date">登录于 2023-04-19 09:15</div>
+                                </div>
+                                <button class="end-session-btn">结束会话</button>
+                            </div>
+                        </div>
+                        
+                        <div class="session-item">
+                            <div class="session-info">
+                                <div class="session-device">
+                                    <i class="bi bi-tablet"></i>
+                                    <div>
+                                        <div class="device-name">iPad - Chrome浏览器</div>
+                                        <div class="device-ip">IP: 115.42.150.xx - 浙江省杭州市</div>
+                                    </div>
+                                </div>
+                                <div class="session-time">
+                                    <div class="login-time">最近活动: 2天前</div>
+                                    <div class="login-date">登录于 2023-04-18 20:45</div>
+                                </div>
+                                <button class="end-session-btn">结束会话</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-actions">
+                        <button type="button" class="form-button end-all-sessions-btn">结束所有其他会话</button>
+                    </div>
+                    
+                    <style>
+                        .sessions-list {
+                            margin: 20px 0;
+                        }
+                        
+                        .session-item {
+                            padding: 15px;
+                            border: 1px solid #eee;
+                            border-radius: 8px;
+                            margin-bottom: 15px;
+                        }
+                        
+                        .session-info {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                        }
+                        
+                        .session-device {
+                            display: flex;
+                            align-items: center;
+                        }
+                        
+                        .session-device i {
+                            font-size: 24px;
+                            margin-right: 15px;
+                            color: #4461F2;
+                        }
+                        
+                        .device-name {
+                            font-weight: 500;
+                            margin-bottom: 3px;
+                        }
+                        
+                        .device-ip {
+                            font-size: 13px;
+                            color: #666;
+                        }
+                        
+                        .session-time {
+                            text-align: right;
+                        }
+                        
+                        .login-time {
+                            font-weight: 500;
+                        }
+                        
+                        .login-date {
+                            font-size: 13px;
+                            color: #666;
+                        }
+                        
+                        .end-session-btn {
+                            padding: 8px 12px;
+                            background-color: #f5f5f5;
+                            border: none;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            font-size: 13px;
+                            transition: background-color 0.2s;
+                        }
+                        
+                        .end-session-btn:hover {
+                            background-color: #e5e5e5;
+                        }
+                        
+                        .end-all-sessions-btn {
+                            background-color: #f5f5f5;
+                            color: #333;
+                        }
+                        
+                        .end-all-sessions-btn:hover {
+                            background-color: #e5e5e5;
+                        }
+                        
+                        @media (max-width: 768px) {
+                            .session-info {
+                                flex-direction: column;
+                                align-items: flex-start;
+                            }
+                            
+                            .session-device, .session-time {
+                                margin-bottom: 10px;
+                            }
+                            
+                            .session-time {
+                                text-align: left;
+                            }
+                        }
+                    </style>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>关于万汇网</h3>
+                    <p>万汇网致力于为用户提供高质量的学术、设计、AI和影视资源，帮助用户提高工作和学习效率。</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="about.html">关于我们</a></li>
+                        <li><a href="#">使用条款</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">帮助中心</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h3>关注我们</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="bi bi-wechat"></i></a>
+                        <a href="#"><i class="bi bi-tencent-qq"></i></a>
+                        <a href="#"><i class="bi bi-chat-dots"></i></a>
+                        <a href="#"><i class="bi bi-person-circle"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-feedback">
+                    <h3>意见反馈</h3>
+                    <div class="feedback-form">
+                        <input type="email" placeholder="您的邮箱">
+                        <textarea placeholder="您的反馈或建议"></textarea>
+                        <button type="submit">提交反馈</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2023 万汇网 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- 微信二维码模态框 -->
+    <div class="qr-modal" id="wechatQrModal" style="display: none;">
+        <div class="qr-container">
+            <button class="qr-close" id="closeWechatQr"><i class="bi bi-x-lg"></i></button>
+            <div class="qr-header">
+                <div class="qr-title">扫码关注我们的微信公众号</div>
+                <div class="qr-subtitle">获取最新资源与活动信息</div>
+            </div>
+            <div class="qr-code">
+                <img src="./image/icons/微信公众号.jpg" alt="微信公众号二维码">
+            </div>
+            <div class="qr-tip">使用微信扫一扫，获取更多精彩内容</div>
+        </div>
+    </div>
+    
+    <script>
+        // 用户设置页面交互脚本
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化用户登录状态
+            if (typeof initUserAuth === 'function') {
+                initUserAuth();
+            } else {
+                // 加载用户认证脚本
+                const authScript = document.createElement('script');
+                authScript.src = 'js/user-auth.js';
+                document.head.appendChild(authScript);
+                
+                authScript.onload = function() {
+                    initUserAuth();
+                    loadUserSettings(); // 确保在认证脚本加载后加载用户设置
+                };
+            }
+            
+            // 加载用户设置数据
+            loadUserSettings();
+            
+            // 设置选项卡切换
+            const tabs = document.querySelectorAll('.settings-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 移除所有选项卡和内容区域的active类
+                    tabs.forEach(t => t.classList.remove('active'));
+                    const sections = document.querySelectorAll('.settings-section');
+                    sections.forEach(s => s.classList.remove('active'));
+                    
+                    // 为当前选项卡添加active类
+                    this.classList.add('active');
+                    
+                    // 显示对应的内容区域
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId + '-section').classList.add('active');
+                });
+            });
+            
+            // 切换密码可见性
+            const togglePasswordBtns = document.querySelectorAll('.toggle-password');
+            togglePasswordBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const inputId = this.getAttribute('data-target');
+                    const input = document.getElementById(inputId);
+                    
+                    // 切换密码显示/隐藏
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        this.classList.remove('bi-eye');
+                        this.classList.add('bi-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        this.classList.remove('bi-eye-slash');
+                        this.classList.add('bi-eye');
+                    }
+                });
+            });
+            
+            // 用户下拉菜单
+            const userBtn = document.querySelector('.user-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            if (userBtn && dropdownMenu) {
+                userBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('show');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!userBtn.contains(e.target)) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+            }
+            
+            // 保存设置按钮点击事件
+            const saveButtons = document.querySelectorAll('.save-btn');
+            saveButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 获取当前活动的设置区域
+                    const activeSection = document.querySelector('.settings-section.active');
+                    
+                    if (activeSection.id === 'security-section') {
+                        saveSecuritySettings();
+                    } else if (activeSection.id === 'notifications-section') {
+                        saveNotificationSettings();
+                    } else if (activeSection.id === 'privacy-section') {
+                        savePrivacySettings();
+                    }
+                    
+                    // 保存成功提示
+                    alert('设置已成功保存！');
+                });
+            });
+            
+            // 取消按钮点击事件
+            const cancelButtons = document.querySelectorAll('.cancel-btn');
+            cancelButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 询问是否放弃更改
+                    if (confirm('确定要放弃当前更改吗？')) {
+                        // 重置表单或返回上一页
+                        loadUserSettings(); // 重新加载保存的设置
+                    }
+                });
+            });
+            
+            // 删除账号按钮点击事件
+            const deleteAccountBtn = document.querySelector('.delete-account-btn');
+            if (deleteAccountBtn) {
+                deleteAccountBtn.addEventListener('click', function() {
+                    // 二次确认
+                    if (confirm('警告：您即将删除账号，所有数据将无法恢复！确定要继续吗？')) {
+                        const password = prompt('请输入您的密码以确认删除账号：');
+                        if (password) {
+                            // 在实际项目中，这里应该发送API请求验证密码和删除账号
+                            // 这里模拟删除账号操作
+                            clearUserData();
+                            alert('账号已删除，您将被登出系统。');
+                            // 登出并跳转到首页
+                            localStorage.setItem('isLoggedIn', 'false');
+                            window.location.href = 'index.html';
+                        }
+                    }
+                });
+            }
+            
+            // 结束会话按钮点击事件
+            const endSessionBtns = document.querySelectorAll('.end-session-btn');
+            endSessionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 获取父元素并移除
+                    const sessionItem = this.closest('.session-item');
+                    if (confirm('确定要结束此会话吗？')) {
+                        sessionItem.style.opacity = '0.5';
+                        setTimeout(() => {
+                            sessionItem.remove();
+                            // 保存活跃会话数据
+                            saveActiveSessions();
+                        }, 500);
+                    }
+                });
+            });
+            
+            // 结束所有会话按钮点击事件
+            const endAllSessionsBtn = document.querySelector('.end-all-sessions-btn');
+            if (endAllSessionsBtn) {
+                endAllSessionsBtn.addEventListener('click', function() {
+                    if (confirm('确定要结束除当前会话外的所有会话吗？')) {
+                        // 保留当前会话，移除其他会话
+                        const sessionItems = document.querySelectorAll('.session-item');
+                        if (sessionItems.length > 1) {
+                            sessionItems.forEach((item, index) => {
+                                if (index > 0) { // 保留第一个（当前会话）
+                                    item.style.opacity = '0.5';
+                                    setTimeout(() => {
+                                        item.remove();
+                                    }, 500);
+                                }
+                            });
+                        }
+                        // 保存活跃会话数据
+                        setTimeout(() => {
+                            saveActiveSessions();
+                        }, 600);
+                        alert('已成功结束所有其他会话！');
+                    }
+                });
+            }
+            
+            // 加载用户设置数据函数
+            function loadUserSettings() {
+                // 检查是否登录
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                if (!isLoggedIn) {
+                    // 未登录，跳转到登录页面
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // 加载用户基本信息
+                const username = localStorage.getItem('username') || '用户名未设置';
+                const email = localStorage.getItem('userEmail') || 'example@mail.com';
+                const phone = localStorage.getItem('userPhone') || '1381234****';
+                
+                // 设置页面上的用户名和头像
+                document.getElementById('headerUsername').textContent = username;
+                
+                // 加载账号安全设置
+                const securitySettings = JSON.parse(localStorage.getItem('securitySettings')) || {};
+                document.getElementById('email').value = securitySettings.email || email;
+                document.getElementById('phone').value = securitySettings.phone || phone;
+                
+                if (securitySettings.securityQuestion) {
+                    document.getElementById('security-question').value = securitySettings.securityQuestion;
+                }
+                
+                if (securitySettings.securityAnswer) {
+                    document.getElementById('security-answer').value = "安全答案已设置，点击修改";
+                }
+                
+                // 加载通知设置
+                const notificationSettings = JSON.parse(localStorage.getItem('notificationSettings')) || {
+                    emailNotifications: true,
+                    contentUpdates: true,
+                    securityAlerts: true,
+                    announcements: true,
+                    inAppMessages: false
+                };
+                
+                const notificationSwitches = document.querySelectorAll('#notifications-section .switch input');
+                notificationSwitches[0].checked = notificationSettings.emailNotifications;
+                notificationSwitches[1].checked = notificationSettings.contentUpdates;
+                notificationSwitches[2].checked = notificationSettings.securityAlerts;
+                notificationSwitches[3].checked = notificationSettings.announcements;
+                notificationSwitches[4].checked = notificationSettings.inAppMessages;
+                
+                // 加载隐私设置
+                const privacySettings = JSON.parse(localStorage.getItem('privacySettings')) || {
+                    publicProfile: true,
+                    publicFavorites: true,
+                    browsingHistory: true,
+                    dataAnalytics: true,
+                    personalization: true
+                };
+                
+                const privacySwitches = document.querySelectorAll('#privacy-section .switch input');
+                privacySwitches[0].checked = privacySettings.publicProfile;
+                privacySwitches[1].checked = privacySettings.publicFavorites;
+                privacySwitches[2].checked = privacySettings.browsingHistory;
+                privacySwitches[3].checked = privacySettings.dataAnalytics;
+                privacySwitches[4].checked = privacySettings.personalization;
+                
+                // 加载活跃会话数据
+                loadActiveSessions();
+            }
+            
+            // 保存账号安全设置
+            function saveSecuritySettings() {
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const currentPassword = document.getElementById('current-password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                const securityQuestion = document.getElementById('security-question').value;
+                const securityAnswer = document.getElementById('security-answer').value;
+                
+                // 验证输入
+                if (newPassword && !currentPassword) {
+                    alert('请输入当前密码');
+                    return;
+                }
+                
+                if (newPassword && newPassword !== confirmPassword) {
+                    alert('新密码与确认密码不匹配');
+                    return;
+                }
+                
+                // 在实际项目中，这里应该发送API请求验证和更新数据
+                // 这里简单模拟存储过程
+                
+                // 保存邮箱和手机号到用户基本信息
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userPhone', phone);
+                
+                // 更新密码 (模拟)
+                if (newPassword && currentPassword) {
+                    const storedPassword = localStorage.getItem('userPassword') || '123456'; // 模拟存储的密码
+                    
+                    // 简单模拟密码验证
+                    if (currentPassword === storedPassword) {
+                        localStorage.setItem('userPassword', newPassword);
+                        alert('密码已成功更新');
+                    } else {
+                        alert('当前密码不正确');
+                        return;
+                    }
+                }
+                
+                // 保存安全设置
+                const securitySettings = {
+                    email: email,
+                    phone: phone,
+                    securityQuestion: securityQuestion,
+                    securityAnswer: securityAnswer !== "安全答案已设置，点击修改" ? securityAnswer : localStorage.getItem('securityAnswer')
+                };
+                
+                if (securityAnswer !== "安全答案已设置，点击修改") {
+                    localStorage.setItem('securityAnswer', securityAnswer);
+                }
+                
+                localStorage.setItem('securitySettings', JSON.stringify(securitySettings));
+                
+                // 清空密码字段
+                document.getElementById('current-password').value = '';
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-password').value = '';
+            }
+            
+            // 保存通知设置
+            function saveNotificationSettings() {
+                const switches = document.querySelectorAll('#notifications-section .switch input');
+                
+                const notificationSettings = {
+                    emailNotifications: switches[0].checked,
+                    contentUpdates: switches[1].checked,
+                    securityAlerts: switches[2].checked,
+                    announcements: switches[3].checked,
+                    inAppMessages: switches[4].checked
+                };
+                
+                localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
+            }
+            
+            // 保存隐私设置
+            function savePrivacySettings() {
+                const switches = document.querySelectorAll('#privacy-section .switch input');
+                
+                const privacySettings = {
+                    publicProfile: switches[0].checked,
+                    publicFavorites: switches[1].checked,
+                    browsingHistory: switches[2].checked,
+                    dataAnalytics: switches[3].checked,
+                    personalization: switches[4].checked
+                };
+                
+                localStorage.setItem('privacySettings', JSON.stringify(privacySettings));
+            }
+            
+            // 加载活跃会话
+            function loadActiveSessions() {
+                // 在实际项目中，这里应该发送API请求获取会话数据
+                // 这里使用localStorage简单模拟
+                const sessions = JSON.parse(localStorage.getItem('userSessions')) || [];
+                
+                // 如果没有存储的会话，使用默认值
+                if (sessions.length === 0) {
+                    // 默认会话保持不变
+                    return;
+                }
+                
+                // 清空现有会话列表
+                const sessionsList = document.querySelector('.sessions-list');
+                sessionsList.innerHTML = '';
+                
+                // 添加会话
+                sessions.forEach(session => {
+                    const sessionItem = document.createElement('div');
+                    sessionItem.className = 'session-item';
+                    sessionItem.innerHTML = `
+                        <div class="session-info">
+                            <div class="session-device">
+                                <i class="bi bi-${session.deviceIcon}"></i>
+                                <div>
+                                    <div class="device-name">${session.deviceName}</div>
+                                    <div class="device-ip">${session.ipAddress}</div>
+                                </div>
+                            </div>
+                            <div class="session-time">
+                                <div class="login-time">${session.status}</div>
+                                <div class="login-date">${session.loginDate}</div>
+                            </div>
+                            <button class="end-session-btn">结束会话</button>
+                        </div>
+                    `;
+                    
+                    sessionsList.appendChild(sessionItem);
+                    
+                    // 添加结束会话事件
+                    const endButton = sessionItem.querySelector('.end-session-btn');
+                    endButton.addEventListener('click', function() {
+                        if (confirm('确定要结束此会话吗？')) {
+                            sessionItem.style.opacity = '0.5';
+                            setTimeout(() => {
+                                sessionItem.remove();
+                                saveActiveSessions();
+                            }, 500);
+                        }
+                    });
+                });
+            }
+            
+            // 保存活跃会话
+            function saveActiveSessions() {
+                const sessionItems = document.querySelectorAll('.session-item');
+                const sessions = [];
+                
+                sessionItems.forEach(item => {
+                    const deviceIcon = item.querySelector('.session-device i').className.replace('bi bi-', '');
+                    const deviceName = item.querySelector('.device-name').textContent;
+                    const ipAddress = item.querySelector('.device-ip').textContent;
+                    const status = item.querySelector('.login-time').textContent;
+                    const loginDate = item.querySelector('.login-date').textContent;
+                    
+                    sessions.push({
+                        deviceIcon,
+                        deviceName,
+                        ipAddress,
+                        status,
+                        loginDate
+                    });
+                });
+                
+                localStorage.setItem('userSessions', JSON.stringify(sessions));
+            }
+            
+            // 清除用户数据（用于删除账号）
+            function clearUserData() {
+                // 清除所有与用户相关的数据
+                localStorage.removeItem('username');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userPhone');
+                localStorage.removeItem('userPassword');
+                localStorage.removeItem('userAvatar');
+                localStorage.removeItem('securitySettings');
+                localStorage.removeItem('notificationSettings');
+                localStorage.removeItem('privacySettings');
+                localStorage.removeItem('userSessions');
+                localStorage.removeItem('securityAnswer');
+                localStorage.removeItem('userFavorites');
+                // 添加其他需要清除的数据
+            }
+        });
+        
+        // 微信二维码展示功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const wechatIcon = document.querySelector('.social-icons a:first-child');
+            const wechatQrModal = document.getElementById('wechatQrModal');
+            const closeWechatQr = document.getElementById('closeWechatQr');
+            
+            if (wechatIcon && wechatQrModal && closeWechatQr) {
+                // 点击微信图标显示二维码
+                wechatIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    wechatQrModal.style.display = 'flex';
+                });
+                
+                // 点击关闭按钮隐藏二维码
+                closeWechatQr.addEventListener('click', function() {
+                    wechatQrModal.style.display = 'none';
+                });
+                
+                // 点击模态框背景区域隐藏二维码
+                wechatQrModal.addEventListener('click', function(e) {
+                    if (e.target === wechatQrModal) {
+                        wechatQrModal.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

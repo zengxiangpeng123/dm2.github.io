@@ -1,0 +1,26 @@
+/* 右上角头像样式修复 */
+.user-avatar-small, #headerAvatarImg {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    object-fit: cover !important;
+    border: none !important;
+    box-shadow: none !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+/* 修复头像外部容器可能的样式影响 */
+.user-btn {
+    display: flex !important;
+    align-items: center !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 如果需要添加悬停效果 */
+#headerAvatarImg:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s;
+} 

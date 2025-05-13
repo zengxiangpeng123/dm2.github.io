@@ -1,0 +1,28 @@
+/* 覆盖收藏按钮的样式 */
+body .favorite-btn {
+    width: auto !important;
+    height: auto !important;
+    border: none !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    padding: 5px !important;
+}
+
+body .favorite-btn:hover {
+    background-color: transparent !important;
+    transform: scale(1.1);
+    border-color: transparent !important;
+}
+
+body .favorite-btn i {
+    font-size: 22px !important;
+    color: #aaa;
+}
+
+body .favorite-btn.active i {
+    color: #ff3e6c;
+}
+
+body .favorite-btn:hover i {
+    color: #ff3e6c;
+} 

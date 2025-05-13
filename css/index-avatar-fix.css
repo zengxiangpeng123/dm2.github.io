@@ -1,0 +1,41 @@
+/* 首页侧边栏头像圆形修复 */
+
+/* 强制覆盖首页的sidebar头像样式 */
+.sidebar .user-info .avatar,
+.sidebar .avatar,
+#userAvatar {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    aspect-ratio: 1 / 1 !important;
+    border: none !important;
+    box-shadow: none !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 头像内的图片 */
+.sidebar .user-info .avatar img,
+.sidebar .avatar img,
+#userAvatar img,
+#avatarImg {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 清除可能的外部容器样式影响 */
+.user-section,
+.user-info {
+    display: flex !important;
+    align-items: center !important;
+} 

@@ -1,0 +1,63 @@
+/* 左侧导航栏头像样式修复 */
+.avatar {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    aspect-ratio: 1 / 1 !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+}
+
+#userAvatar {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    aspect-ratio: 1 / 1 !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#avatarImg {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+}
+
+/* 覆盖user-section中的样式 */
+.user-section .avatar,
+.user-section #userAvatar {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    aspect-ratio: 1 / 1 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 专门针对首页sidebar的额外修复 */
+.sidebar .user-info .avatar {
+    border-radius: 50% !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    max-width: 48px !important;
+    max-height: 48px !important;
+} 

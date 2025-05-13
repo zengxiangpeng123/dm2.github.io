@@ -1,0 +1,107 @@
+/* 登录页面样式 */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px);
+    padding: 20px;
+    background-color: var(--color-background);
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--color-text-primary);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.input-group input {
+    flex: 1;
+}
+
+.send-code-btn {
+    padding: 0 15px;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.send-code-btn:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.send-code-btn:disabled {
+    background-color: var(--color-border);
+    cursor: not-allowed;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.login-btn:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.login-options {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-options a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.login-options a:hover {
+    text-decoration: underline;
+}
+
+/* 响应式样式 */
+@media (max-width: 480px) {
+    .login-box {
+        padding: 20px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .send-code-btn {
+        width: 100%;
+        padding: 12px;
+    }
+} 

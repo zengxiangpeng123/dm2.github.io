@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>头像样式修复 - 万汇网</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/avatar-styles.css">
+    <link rel="stylesheet" href="css/header-avatar-fix.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fc;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .demo-section {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            flex-direction: column;
+            align-items: center;
+        }
+        .avatar-demo {
+            display: flex;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .avatar-example {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .demo-label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .instructions {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        .actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6a4df3;
+            color: white;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        .btn:hover {
+            background-color: #5a3ecd;
+        }
+        /* 演示头像容器 */
+        .demo-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .demo-logo {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+        .user-dropdown {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>头像样式修复</h1>
+            <p>右上角头像改为圆形且去掉边框</p>
+        </div>
+        
+        <div class="demo-section">
+            <h2>效果演示</h2>
+            <div class="demo-header">
+                <div class="demo-logo">万汇网</div>
+                <div class="user-dropdown">
+                    <button class="user-btn">
+                        <img id="headerAvatarImg" src="./image/image--01.png" alt="用户头像" class="user-avatar-small">
+                        <span id="headerUsername">用户名</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="avatar-demo">
+                <div class="avatar-example">
+                    <h3>修复前（椭圆形，有边框）</h3>
+                    <img src="./image/image--01.png" alt="修复前" style="width: 32px; height: 32px; border-radius: 30%; border: 1px solid #6a4df3;">
+                    <span class="demo-label">椭圆形头像</span>
+                </div>
+                <div class="avatar-example">
+                    <h3>修复后（圆形，无边框）</h3>
+                    <img src="./image/image--01.png" alt="修复后" style="width: 32px; height: 32px; border-radius: 50%; border: none;">
+                    <span class="demo-label">圆形头像</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>修复说明：</h3>
+            <p>1. 已创建 <code>header-avatar-fix.css</code> 文件，专门针对右上角头像进行样式修复</p>
+            <p>2. 修复内容包括：</p>
+            <ul>
+                <li>将右上角的头像从椭圆形修改为完美圆形</li>
+                <li>移除头像周围的颜色边框</li>
+                <li>确保头像比例始终保持1:1</li>
+            </ul>
+            <p>3. 应用方法：</p>
+            <ul>
+                <li>确保在 <code>index.html</code> 中引入了 <code>header-avatar-fix.css</code> 文件</li>
+                <li>样式使用了 <code>!important</code> 标记确保可以覆盖其他样式</li>
+            </ul>
+        </div>
+        
+        <div class="actions">
+            <button class="btn" onclick="location.href='index.html'">返回主页</button>
+        </div>
+    </div>
+</body>
+</html> 

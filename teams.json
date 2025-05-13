@@ -1,0 +1,67 @@
+
+[
+    {
+        "name": "team01--在线点餐系统",
+        "url": "./teams/team11/index.html"
+    },
+    {
+        "name": "team02--CityScape",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team02/index.html"
+    },
+    {
+        "name": "team03--酒店前台管理系统",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team03/index.html"
+    },
+    {
+        "name": "team04--外卖代购系统",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team04/index.html"
+    },
+    {
+        "name": "team05--简购",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team05/index.html"
+    },
+    {
+        "name": "team06--家宠与盆栽养护小助手",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team06/index.html"
+    },
+    {
+        "name": "team07--宠物收养",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team07/index.html"
+    },
+    {
+        "name": "team08--怀化学院篮球裁判协会交易平台",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team08/index.html"
+    },
+    {
+        "name": "team09--Never Stopping",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team09/index.html"
+    },
+    {
+        "name": "team10--趣游乐园",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team10/index.html"
+    },
+    {
+        "name": "team11--万论网",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team11/index.html"
+    },
+    {
+        "name": "team12--香域漫游指南",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team12/index.html"
+    },
+    {
+        "name": "team13--旅游景点推荐",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team13/index.html"
+    },
+    {
+        "name": "team14--仓库管理类平台生成助手",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team14/index.html"
+    },
+    {
+        "name": "team15--“脂在必行”网页设计方案",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team15/index.html"
+    },
+    {
+        "name": "team16--奥林匹克比赛信息展示网站",
+        "url": "http://127.0.0.1:5500/project_overall_code/team11/teams/team16/index.html"
+    }
+]
