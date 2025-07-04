@@ -25,6 +25,7 @@
 1. 下载或克隆本项目到本地环境
 2. 直接在浏览器中打开`index.html`文件查看效果
 3. 根据项目需求自行修改HTML结构和CSS样式
+4. 使用地址:https://zengxiangpeng123.github.io/dm2.github.io/
 
 ## 页面组成
 
